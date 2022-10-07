@@ -1,38 +1,36 @@
 ---
 lab:
-    title: 'Lab 10 – Isolate problem areas in poorly performing queries in a SQL Database'
-    module: 'Optimize query performance in Azure SQL'
+    title: 'Lab 10 – SQL データベースでパフォーマンスが低いクエリの問題箇所を特定する'
+    module: 'Azure SQL でクエリパフォーマンスを最適化する'
 ---
 
-# Isolate problem areas in poorly performing queries in a SQL Database
+# SQL データベースでパフォーマンスの低いクエリの問題箇所を特定する。
 
-**Estimated Time: 30 minutes**
+**見積もり時間: 30 分**です。
 
-You've been hired as a Senior Database Administrator to help with performance issues currently happening when users query the *AdventureWorks2017* database. Your job is to identify issues in query performance and remedy them using techniques learned in this module.
+あなたは、ユーザーが *AdventureWorks2017* データベースにクエリを実行したときに現在発生しているパフォーマンスの問題を解決するために、シニアデータベース管理者として雇われました。あなたの仕事は、クエリパフォーマンスの問題を特定し、このモジュールで学んだテクニックを使用してそれらを改善することです。
 
-You'll run queries with suboptimal performance, examine the query plans, and attempt to make improvements within the database.
+最適でないパフォーマンスのクエリを実行し、クエリプランを検証し、データベース内で改善を試みます。
 
-**Note:** These exercises ask you to copy and paste T-SQL code. Please verify that the code has been copied correctly, before executing the code.
+**注意:** これらの演習では、T-SQL コードをコピーして貼り付けるよう求められます。コードを実行する前に、コードが正しくコピーされたことを確認してください。
 
-## Restore a database
+## データベースの復元
 
-1. Download the database backup file located on **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorks2017.bak** to **C:\LabFiles\Monitor and optimize** path on the lab virtual machine (create the folder structure if it does not exist).
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorks2017.bak** にあるデータベースのバックアップファイルをラボ仮想マシン上の **C:\LabFiles\Monitor and optimize** パスにダウンロードします（存在しない場合はフォルダ構造を作成します）。
 
     ![Picture 03](../images/dp-300-module-07-lab-03.png)
 
-1. Select the Windows Start button and type SSMS. Select **Microsoft SQL Server Management Studio 18** from the list.  
+1. Windowsのスタートボタンを選択し、SSMSと入力します。リストから **Microsoft SQL Server Management Studio 18** を選択します。 
 
-    ![Picture 01](../images/dp-300-module-01-lab-34.png)
-
-1. When SSMS opens, notice that the **Connect to Server** dialog will be pre-populated with the default instance name. Select **Connect**.
+1. SSMSが開くと、**Connect to Server** ダイアログにデフォルトのインスタンス名が事前に入力されていることに注意してください。**Connect**を選択します。
 
     ![Picture 02](../images/dp-300-module-07-lab-01.png)
 
-1. Select the **Databases** folder, and then **New Query**.
+1. **Databases** フォルダを選択し、**New Query** を選択します。
 
     ![Picture 03](../images/dp-300-module-07-lab-04.png)
 
-1. In the new query window, copy and paste the below T-SQL into it. Execute the query to restore the database.
+1. 新しいクエリウィンドウで、以下のT-SQLをコピーして貼り付けます。データベースを復元するためにクエリを実行する。
 
     ```sql
     RESTORE DATABASE AdventureWorks2017
@@ -44,19 +42,19 @@ You'll run queries with suboptimal performance, examine the query plans, and att
             TO 'C:\LabFiles\Monitor and optimize\AdventureWorks2017_log.ldf';
     ```
 
-    **Note:** The database backup file name and path should match with what you've downloaded on step 1, otherwise the command will fail.
+    **注意：** データベースのバックアップファイルの名前とパスは、ステップ1でダウンロードしたものと一致させる必要があります。
 
-1. You should see a successful message after the restore is complete.
+1. リストア完了後、成功のメッセージが表示されるはずです。
 
     ![Picture 03](../images/dp-300-module-07-lab-05.png)
 
-## Generate actual execution plan
+## 実際の実行計画を作成する
 
-There are several ways to generate an execution plan in SQL Server Management Studio.
+SQL Server Management Studioで実行計画を生成するには、いくつかの方法があります。
 
-1. Select **New Query**. Copy and paste the following T-SQL code into the query window. Select **Execute** to execute this query.
+1. **New Query**を選択します。以下のT-SQLコードをコピーしてクエリウィンドウに貼り付けます。実行**を選択し、このクエリを実行します。
 
-    **Note:** Use **SHOWPLAN_ALL** to see a text version of a query's execution plan in the results pane instead of graphically in a separate tab.
+    **注:** **SHOWPLAN_ALL** を使用すると、クエリの実行計画を別のタブでグラフィカルに表示するのではなく、結果ペインでテキストバージョンとして表示できます。
 
     ```sql
     USE AdventureWorks2017;
@@ -74,25 +72,25 @@ There are several ways to generate an execution plan in SQL Server Management St
     GO
     ```
 
-    You'll see a text version of the execution plan, instead of the actual query results for the **SELECT** statement.
+    実際の**SELECT**文のクエリ結果ではなく、実行計画のテキスト版が表示されます。
 
-    ![Screenshot showing the text version of a query plan](../images/dp-300-module-10-lab-01.png)
+    ![クエリ実行計画のテキスト版を表示するスクリーンショット](../images/dp-300-module-10-lab-01.png)
 
-1. Take a moment to examine the text in the second row of the **StmtText** column:
+1. **StmtText** カラムの 2 行目のテキストを確認してください。
 
     ```console
     |--Index Seek(OBJECT:([AdventureWorks2017].[HumanResources].[Employee].[AK_Employee_NationalIDNumber]), SEEK:([AdventureWorks2017].[HumanResources].[Employee].[NationalIDNumber]=CONVERT_IMPLICIT(nvarchar(4000),[@1],0)) ORDERED FORWARD)
     ```
 
-    The above text explains that the execution plan use an **Index Seek** on the **AK_Employee_NationalIDNumber** key. It also shows that the execution plan needed to do a **CONVERT_IMPLICIT** step.
+    上記の文章は、実行計画が**AK_Employee_NationalIDNumber**キーに対して**Index Seek**を使用することを説明しています。また、実行計画が**CONVERT_IMPLICIT**ステップを実行する必要があることも示しています。
 
-    The query optimizer was able to locate an appropriate index to fetch the required records.
+    クエリオプティマイザは、必要なレコードをフェッチするために適切なインデックスを見つけることができました。
 
-## Resolve a suboptimal query plan
+## 最適でないクエリプランを解決する
 
-1. Copy and paste the code below into a new query window.
+1. 以下のコードをコピーして、新しいクエリウィンドウに貼り付けてください。
 
-    Select the **Include Actual Execution Plan** icon as shown below before running the query, or press <kbd>CTRL</kbd>+<kbd>M</kbd>. Execute the query by selecting **Execute** or press <kbd>F5</kbd>. Make note of the execution plan and the logical reads in the messages tab.
+    クエリを実行する前に、以下に示すように **Include Actual Execution Plan** アイコンを選択するか、<kbd>CTRL+M</kbd> を押します。**Execute** を選択するか、<kbd>F5</kbd> を押してクエリを実行します。[メッセージ] タブで、実行計画と論理読み取りをメモします。
 
     ```sql
     SET STATISTICS IO, TIME ON;
@@ -102,26 +100,27 @@ There are several ways to generate an execution plan in SQL Server Management St
     WHERE [ModifiedDate] > '2012/01/01' AND [ProductID] = 772;
     ```
 
-    ![Screenshot showing the execution plan for the query](../images/dp-300-module-10-lab-02.png)
 
-    When reviewing the execution plan, you will note there is a **Key Lookup**. If you hover your mouse over the icon, you will see that the properties indicate it is performed for each row retrieved by the query. You can see the execution plan is performing a **Key Lookup** operation.
+    ![クエリの実行計画を表示した画面](../images/dp-300-module-10-lab-02.png)
 
-    ![Screenshot showing the output list of columns](../images/dp-300-module-10-lab-03.png)
+    実行計画を確認すると、**Key Lookup**という項目があることがわかります。アイコンの上にマウスを置くと、プロパティがクエリで取得された各行に対して実行されることを示しているのがわかります。実行計画が **Key Lookup** 操作を実行していることがわかります。
 
-    Make a note of the columns in the **Output List** section. How would you improve this query?
+    ![このように、列の出力リストを示すスクリーンショット](../images/dp-300-module-10-lab-03.png)が表示されます。
 
-    To identify what index needs to be altered in order to remove the key lookup, you need to examine the index seek above it. Hover over the index seek operator with your mouse and the properties of the operator will appear.
+    **出力リスト**にある列をメモしておいてください。このクエリをどのように改善しますか？
 
-    ![Screenshot showing the NonClustered index](../images/dp-300-module-10-lab-04.png)
+    キーのルックアップを削除するためにどのインデックスを変更する必要があるかを特定するために、その上のインデックスシークを検査する必要があります。インデックスシーク演算子の上にマウスを置くと、その演算子のプロパティが表示されます。
 
-1. **Key Lookups** can be removed by adding a covering index that includes all fields being returned or searched in the query. In this example the index only uses the **ProductID** column. Fix the **Key Lookup** and rerun the query to see the new plan.
+    ![NonClusteredインデックスを示すスクリーンショット](../images/dp-300-module-10-lab-04.png)
+
+1. **キー検索**は、クエリで返される、または検索されるすべてのフィールドを含むカバーインデックスを追加することで、削除することができます。この例では、インデックスは **ProductID** 列のみを使用します。**キールックアップ**を修正し、クエリを再実行すると、新しいプランが表示されます。
 
     ```sql
     CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID] ON [Sales].[SalesOrderDetail]
     ([ProductID] ASC)
     ```
 
-    If we add the **Output List** fields to the index as included columns, then the **Key Lookup** will be removed. Since the index already exists you either have to DROP the index and recreate it, or set the **DROP_EXISTING=ON** in order to add the columns. Note that the **ProductID** column is already part of the index and does not need to be added as an included column. There is another performance improvement we can make to the index by adding the **ModifiedDate**.
+    **出力リスト**フィールドを含まれる列としてインデックスに追加すると、**キールックアップ**は削除されます。インデックスはすでに存在しているので、列を追加するためには、インデックスをDROPして再作成するか、**DROP_EXISTING=ON**を設定する必要があります。ProductID**列はすでにインデックスの一部であり、含まれる列として追加する必要はないことに注意してください。ModifiedDate**を追加することで、もう1つインデックスを改善することができます。
 
     ```sql
     CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID]
@@ -131,17 +130,17 @@ There are several ways to generate an execution plan in SQL Server Management St
     GO
     ```
 
-1. Rerun the query from step 1. Make note of the changes to the logical reads and execution plan changes. The plan now only needs to use the nonclustered index we created.
+1. ステップ 1 のクエリを再実行します。論理読み込みの変更と実行計画の変更を記録してください。この計画では、作成した非クラスタ化インデックスを使用するだけでよくなりました。
 
-    ![Screenshot showing the improved execution plan](../images/dp-300-module-10-lab-05.png)
+    ![改善された実行計画を示すスクリーンショット](../images/dp-300-module-10-lab-05.png)
 
-## Use Query Store to detect and handle regression
+## Query Store を使ってリグレッションを検出し処理する
 
-Next you'll run a workload to generate query statistics for query store, examine **Top Resource Consuming Queries** report to identify poor performance, and see how to force a better execution plan.
+次に、クエリストア用のクエリ統計情報を生成するワークロードを実行し、**Top Resource Consuming Queries** レポートを調べてパフォーマンスの低下を特定し、より良い実行計画を強制する方法を見ます。
 
-1. Select **New Query**. Copy and paste the following T-SQL code into the query window. Select **Execute** to execute this query.
+1. **New Query** を選択します。以下のT-SQLコードをコピーしてクエリウィンドウに貼り付けます。実行**を選択して、このクエリを実行します。
 
-    This script will enable the Query Store feature for AdventureWorks2017 database and sets the database to Compatibility Level 100.
+    このスクリプトは、AdventureWorks2017データベースのクエリストア機能を有効にして、データベースを互換性レベル100に設定します。
 
     ```sql
     USE [master];
@@ -157,25 +156,25 @@ Next you'll run a workload to generate query statistics for query store, examine
     GO
     ```
 
-    Changing the compatibility level is like moving the database back in time. It restricts the features SQL server can use to those that were available in SQL Server 2008.
+    互換性レベルを変更することは、データベースを過去に戻すようなものです。SQL Server が使用できる機能を、SQL Server 2008 で使用できた機能に制限します。
 
-1. Download the T-SQL script located on **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/CreateRandomWorkloadGenerator.sql** to **C:\LabFiles\Monitor and optimize** path on the lab virtual machine.
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/CreateRandomWorkloadGenerator.sql** にある T-SQL スクリプトを **C:\LabFiles にダウンロードします。ラボ仮想マシンの \Monitor and optimize** パス。
 
-1. Download the T-SQL script located on **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/ExecuteRandomWorkload.sql** to **C:\LabFiles\Monitor and optimize** path on the lab virtual machine.
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/ExecuteRandomWorkload.sql** にある T-SQL スクリプトを **C:\LabFiles にダウンロードします。ラボ仮想マシンの \Monitor and optimize** パス。
 
-1. Select the **File** > **Open** > **File** menu in SQL Server Management Studio.
+1. SQL Server Management Studio で **ファイル** > **開く** > **ファイル** メニューを選択します。
 
-1. Navigate to the **C:\LabFiles\Monitor and optimize\CreateRandomWorkloadGenerator.sql** file.
+1. **C:\LabFiles\Monitor and optimize\CreateRandomWorkloadGenerator.sql** ファイルに移動します。
 
-1. Once opened into SQL Server Management Studio, select **Execute** or press <kbd>F5</kbd> to execute the query.
+1. SQL Server Management Studio で開いたら、[**実行**] を選択するか、<kbd>F5</kbd> を押してクエリを実行します。
 
-1. In a new query editor, open the file **C:\LabFiles\Monitor and optimize\ExecuteRandomWorkload.sql**, and select **Execute** or press <kbd>F5</kbd> to execute the query.
+1. 新しいクエリ エディターで、ファイル **C:\LabFiles\Monitor and optimize\ExecuteRandomWorkload.sql** を開き、**実行** を選択するか、<kbd>F5</kbd> を押してクエリを実行します。
 
-1. After the execution completes, run the script a second time to create additional load on the server. Leave the query tab open for this query.
+1. 実行が完了したら、スクリプトをもう一度実行して、サーバーに追加の負荷を作成します。このクエリの [クエリ] タブを開いたままにします。
 
-1. Copy and paste the code below into a new query window and execute it by selecting **Execute** or press <kbd>F5</kbd>. 
+1. 以下のコードをコピーして新しいクエリウィンドウに貼り付け、**実行**を選択するか、<kbd>F5</kbd>を押して実行します。
 
-    This script changes the database compatibility mode to SQL Server 2019 (**150**). All the features and improvements since SQL Server 2008 will now be available to the database.
+    このスクリプトは、データベースの互換性モードを SQL Server 2019 (**150**) に変更します。SQL Server 2008 以降のすべての機能と改善点が、データベースで利用できるようになります。
 
     ```sql
     USE [master];
@@ -185,59 +184,60 @@ Next you'll run a workload to generate query statistics for query store, examine
     GO
     ```
 
-1. Navigate back to the query tab from **ExecuteRandomWorkload.sql** file, and re-execute it.
+1. **ExecuteRandomWorkload.sql** ファイルからクエリタブに戻り、再実行します。
 
-## Examine Top Resource Consuming Queries report
+## リソース消費量の多いクエリレポートを確認する
 
-1. In order to view the Query Store node you will need to refresh the AdventureWorks2017 database in SQL Server Management Studio. Right click on database name and choose select **Refresh**. You will then see the Query Store node under the database.
+1. Query Storeノードを表示するには、SQL Server Management StudioでAdventureWorks2017データベースをリフレッシュする必要があります。データベース名を右クリックし、**リフレッシュ**を選択します。すると、データベースの下にクエリストアノードが表示されます。
 
-    ![Expand Query Store](../images/dp-300-module-10-lab-06.png)
+    ![クエリストアを展開する](../images/dp-300-module-10-lab-06.png)
 
-1. Expand the **Query Store** node to view all the reports available. Select the **Top Resource Consuming Queries** report.
+1. **Query Store** ノードを展開し、利用可能なすべてのレポートを表示します。Top Resource Consuming Queries** レポートを選択します。
 
-    ![Top Resource Consuming Queries Report from Query Store](../images/dp-300-module-10-lab-07.png)
+    ![クエリストアからのトップリソース消費クエリレポート](../images/dp-300-module-10-lab-07.png)
 
-1. The report will open as shown below. On the right, select the menu dropdown, then select **Configure**.
+1. 下図のようなレポートが表示されます。右側のメニューのドロップダウンを選択し、**Configure**を選択します。
 
-    ![Selecting configure option for Top Resource Consuming Queries Report](../images/dp-300-module-10-lab-08.png)
+    ![トップリソースコンシューミングクエリレポートの設定オプションの選択](../images/dp-300-module-10-lab-08.png)
 
-1. In the configuration screen, change the filter for the minimum number of query plans to 2. Then select **OK**.
+1. 設定画面で、クエリプランの最小数のフィルタを2に変更し、**OK**を選択します。
 
-    ![Set Minimum number of query plans](../images/dp-300-module-10-lab-09.png)
+    ![クエリプランの最小数の設定](../images/dp-300-module-10-lab-09.png)
 
-1. Choose the query with the longest duration by selecting the left most bar in the bar chart in the top left portion of the report.
+1. レポートの左上にある棒グラフの一番左の棒を選択して、最長時間のクエリを選択します。
 
-    ![Query with longest duration](../images/dp-300-module-10-lab-10.png)
+    ![最も時間が長いクエリ](../images/dp-300-module-10-lab-10.png)
 
-    This will show you the query and plan summary for your longest duration query in your query store.
+    これは、クエリストア内の最長時間クエリのクエリとプランのサマリーを表示します。
 
-## Force a better execution plan
+## より良い実行プランを強制的に作成する
 
-1. Navigate to the plan summary portion of the report as shown below. You will note there are two execution plans with widely different durations.
+1. 以下のように、レポートの計画概要部分に移動してください。大きく異なる期間の2つの実行計画があることに気がつくでしょう。
 
-    ![Plan summary](../images/dp-300-module-10-lab-11.png)
+    ![プランの要約](../images/dp-300-module-10-lab-11.png)
 
-1. Select the Plan ID with the lowest duration (this is indicated by a lower position on the Y-axis of the chart) in the top right window of the report. In the graphic above, it’s *PlanID 43*. Select the plan ID next to the Plan Summary chart (it should be highlighted like in the above screenshot).
+1. レポートの右上のウィンドウで、持続時間が最も短いプラン ID (これはチャートの Y 軸の低い位置で示されます) を選択します。上の図では、それは *PlanID 43* です。Plan Summary チャートの隣にあるプラン ID を選択します (上のスクリーンショットのようにハイライトされているはずです)。
 
-1. Select **Force Plan** under the summary chart. A confirmation window will popup, select **Yes**.
+1. サマリーチャートの下にある **Force Plan** を選択します。確認ウィンドウがポップアップするので、**Yes**を選択します。
 
-    ![Screenshot showing the confirmation](../images/dp-300-module-10-lab-12.png)
+    ![確認のスクリーンショット](../images/dp-300-module-10-lab-12.png)
 
-    Once the plan is forced you will see that the **Forced Plan** is now greyed out and the plan in the plan summary window now has a check mark indicating is it forced.
+    計画が強制されると、**Forced Plan**がグレーアウトし、計画概要ウィンドウの計画が強制されたことを示すチェックマークが付くことがわかります。
 
-    There can be times when the query optimizer can make a poor choice on which execution plan to use. When this happens you can force SQL server to use the plan you want when you know it performs better.
+    クエリオプティマイザは、どの実行プランを使用するかについて、適切な選択をしないことがあります。これが発生した場合、パフォーマンスが向上していることがわかっている場合は、必要なプランを SQL サーバーに強制的に使用させることができます。
 
-## Use query hints to impact performance
 
-Next you'll run a workload, change the query to use a parameter, apply a query hint to the query, and re-execute it.
+## パフォーマンスに影響を与えるクエリヒントの使用
 
-Before continuing with the exercise close all the current query windows by selecting the **Window** menu, then select **Close All Documents**. In the popup select **No**.
+次に、ワークロードを実行し、パラメータを使用するようにクエリを変更し、クエリヒントを適用し、再実行します。
 
-1. Select **New Query**, then select the **Include Actual Execution Plan** icon before running the query or use <kbd>CTRL</kbd>+<kbd>M</kbd>.
+この演習を続ける前に、**ウィンドウ**メニューを選択し、**すべてのドキュメントを閉じる**を選択して、現在のすべてのクエリウィンドウを閉じます。ポップアップで**No**を選択します。
+
+1. **New Query** を選択し、クエリを実行する前に **Include Actual Execution Plan** アイコンを選択するか、<kbd>CTRL+M</kbd> を使用してください。
 
     ![Include Actual Execution Plan](../images/dp-300-module-10-lab-13.png)
 
-1. Execute the query below. Note that the execution plan shows an index seek operator.
+1. 以下のクエリを実行します。実行計画では、インデックスシーク演算子が表示されていることに注意してください。
 
     ```sql
     USE AdventureWorks2017;
@@ -248,9 +248,9 @@ Before continuing with the exercise close all the current query windows by selec
     WHERE SalesPersonID=288;
     ```
 
-    ![Screenshot showing the updated execution plan](../images/dp-300-module-10-lab-14.png)
+    ![実行計画が更新されたスクリーンショット](../images/dp-300-module-10-lab-14.png)
 
-1. In a new query window, run the next query. Compare both execution plans.
+1. 新しいクエリウィンドウで、次のクエリを実行します。両方の実行計画を比較してください。
 
     ```sql
     USE AdventureWorks2017;
@@ -261,19 +261,19 @@ Before continuing with the exercise close all the current query windows by selec
     WHERE SalesPersonID=277;
     ```
 
-    The only change this time is that the SalesPersonID value is set to 277. Note the Clustered Index Scan operation in the execution plan.
+    今回の変更点は、SalesPersonIDの値が277に設定されていることだけです。実行プランのクラスタ化インデックススキャンに注目してください。
 
-    ![Screenshot showing the sql statement](../images/dp-300-module-10-lab-15.png)
+    ![SQL文を表示したスクリーンショット](../images/dp-300-module-10-lab-15.png)
 
-As we can see, based on the index statistics the query optimizer has chosen a different execution plan because of the different values in the `WHERE` clause.
+見ての通り、インデックスの統計情報から、クエリオプティマイザは`WHERE`句の値が異なるため、異なる実行計画を選択しました。
 
-Why do we have different plans if we only changed the *SalesPersonID* value?
+*SalesPersonID*の値を変更しただけなのに、なぜ異なるプランになるのでしょうか？
 
-This query uses a constant in its `WHERE` clause, the optimizer sees each of these queries as unique and generates a different execution plan each time.
+このクエリは `WHERE` 節で定数を使用しているため、オプティマイザはこれらのクエリをそれぞれユニークなものとして捉え、毎回異なる実行計画を生成しています。
 
-## Change the query to use a variable and use a Query Hint
+## 変数を使用するようにクエリを変更し、クエリヒントを使用する
 
-1. Change the query to use a variable value for SalesPersonID.
+1. SalesPersonID に変数値を使用するようにクエリを変更します。
 
 1. Use the T-SQL **DECLARE** statement to declare <strong>@SalesPersonID</strong> so you can pass in a value instead of hard-code the value in the **WHERE** clause. You should ensure that the data type of your variable matches the data type of the column in the target table to avoid implicit conversion.
 
@@ -292,9 +292,9 @@ This query uses a constant in its `WHERE` clause, the optimizer sees each of the
     WHERE SalesPersonID= @SalesPersonID;
     ```
 
-    If you examine the execution plan, you will note it is using an index scan to get the results. The query optimizer couldn't make good optimizations because it can't know the value of the local variable until runtime.
+    実行計画を見ると、結果を得るためにインデックススキャンを使用していることがわかります。クエリオプティマイザは実行時までローカル変数の値を知ることができないため、良い最適化を行うことができなかったのです。
 
-1. You can help the query optimizer to make better choices by providing a query hint. Rerun the above query with `OPTION (RECOMPILE)`:
+1. クエリヒントを提供することで、クエリオプティマイザがより良い選択をするのを助けることができます。OPTION (RECOMPILE)` を指定して、上記のクエリを再実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -312,8 +312,8 @@ This query uses a constant in its `WHERE` clause, the optimizer sees each of the
     OPTION (RECOMPILE);
     ```
 
-    Note that the query optimizer has been able to choose a more efficient execution plan. The `RECOMPILE` option causes the query compiler to replace the variable with its value.
+    クエリオプティマイザがより効率的な実行計画を選択できるようになったことに注目してください。RECOMPILE` オプションは、クエリコンパイラが変数をその値に置き換えるようにします。
 
-    Comparing the statistics, you can see in the message tab that the difference between logical reads is **68%** more (689 versus 409) for the query without the query hint.
+    統計情報を比較すると、メッセージタブで、論理読み込みの差はクエリヒントなしのクエリの方が **68%** 多い（689対409）ことがわかります。
 
-In this exercise, you've learned how to identify query problems, and how to fix it to improve the query plan.
+この演習では、クエリの問題を特定する方法と、クエリプランを改善するためにそれを修正する方法を学びました。
