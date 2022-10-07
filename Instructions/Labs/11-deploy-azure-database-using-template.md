@@ -1,24 +1,25 @@
 ---
 lab:
-    title: 'Lab 11 – Deploy Azure SQL Database using Azure Resource Manager template'
-    module: 'Automate database tasks for Azure SQL'
+    title: 'Lab 11 – Azure Resource Manager テンプレートを使用した Azure SQL Database のデプロイ'
+    module: 'Azure SQL のデータベース タスクを自動化する'
 ---
 
-# Deploy an Azure SQL Database from a template
+# テンプレートから Azure SQL Database をデプロイする
 
-**Estimated Time: 15 minutes**
+**見積もり時間: 15 分**
 
-You've been hired as a Senior Data Engineer to help automate day to day operations of database administration. This automation is to help ensure that the databases for AdventureWorks continue to operate at peak performance and provide methods for alerting based on certain criteria. AdventureWorks uses SQL Server in both Infrastructure as a Service (IaaS) and Platform as a Service (PaaS) offerings.
+あなたは、データベース管理の日常業務を自動化するために、シニアデータエンジニアとして採用されました。この自動化は、AdventureWorksのデータベースが最高のパフォーマンスで動作し続けることを保証し、特定の基準に基づいて警告するための方法を提供するためのものです。AdventureWorksは、Infrastructure as a Service (IaaS) とPlatform as a Service (PaaS) の両方のオファリングでSQL Serverを使用しています。
 
-## Explore Azure Resource Manager template
+## Azure Resource Manager テンプレートの探索
 
-1. In Microsoft Edge, open a new tab and navigate to the following path in a GitHub repository, which contains an ARM template to deploy a SQL Database resource
+1. Microsoft Edge で新しいタブを開き、GitHub リポジトリの次のパスに移動します。このパスには、SQL Database リソースをデプロイするための ARM テンプレートが含まれています。
 
     ```
     https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.sql/sql-database
     ```
 
-1. Right-click **azuredeploy.json**, and select **Open link in new tab** to view the ARM template, which should look similar to this:
+1. **azuredeploy.json** を右クリックし、**Open link in new tab** を選択すると、以下のような ARM テンプレートが表示されるはずです。
+
 
     ```JSON
     {
@@ -90,24 +91,24 @@ You've been hired as a Senior Data Engineer to help automate day to day operatio
     }
     ```
 
-1. Review and observe the JSON properties.
+1. JSONのプロパティを確認し、観察する。
 
-1. Close the **azuredeploy.json** tab and return to the tab containing the **sql-database** GitHub folder. Scroll down and select **Deploy to Azure**.
+1. **azuredeploy.json** タブを閉じ、**sql-database** GitHub フォルダを含むタブに戻ります。スクロールダウンして、**Deploy to Azure**を選択します。
 
-    ![Deploy to Azure button](../images/dp-300-module-11-lab-01.png)
+    ![Azureにデプロイボタン](../images/dp-300-module-11-lab-01.png)
 
-1. The **Create a SQL Server and Database** quickstart template page will open on Azure portal, with resource details partially filled in from the ARM template. Complete the blank fields with the information below:
+1. Azureポータルに**Create a SQL Server and Database** quickstart templateページが開き、リソースの詳細がARMテンプレートから部分的に入力されます。空欄に以下の情報を入力してください。
 
-    - **Resource group:** starting with *contoso-rg*
-    - **Sql Administrator Login:** labadmin
-    - **Sql Administrator Login Password:** &lt;enter a strong password&gt;
+    - **リソースグループ：** *contoso-rg*で始まる。
+    - **Sql 管理者ログイン:** labadmin
+    - **SQL管理者ログインパスワード:** &lt;enter a strong password&gt;
 
-1. Select **Review + create**, and then select **Create**. Your deployment will take 5 minutes or so to deploy.
+1. **確認と作成** を選択し、次に **作成** を選択します。5分ほどでデプロイが完了します。
 
     ![Picture 2](../images/dp-300-module-11-lab-02.png)
 
-1. When deployment has completed, select **Go to resource group**. You'll be taken to your Azure Resource Group, which contains a randomly named **SQL Server** resource created by the deployment.
+1. デプロイが完了したら、**リソースグループへ移動** を選択します。Azure Resource Group に移動し、デプロイで作成されたランダムな名前の **SQL Server** リソースが含まれています。
 
     ![Picture 3](../images/dp-300-module-11-lab-03.png)
 
-You've just seen how, with a single click on an Azure Resource Manager template link, you can easily create both an Azure SQL server and database.
+Azure Resource Manager のテンプレートリンクを 1 回クリックするだけで、Azure SQL サーバーとデータベースの両方を簡単に作成できることがお分かりいただけたかと思います。
