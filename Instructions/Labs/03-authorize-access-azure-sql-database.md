@@ -1,69 +1,70 @@
 ---
 lab:
-    title: 'Lab 3 – Authorize access to Azure SQL Database with Azure Active Directory'
-    module: 'Implement a Secure Environment for a Database Service'
+    title: 'Lab 3 – Azure Active Directory を使用して Azure SQL データベースへのアクセスを認証する'
+    module: 'データベース サービスに安全な環境を実装する'
 ---
 
-# Configure database authentication and authorization
+# データベースの認証と認可を構成する
 
-**Estimated Time: 20 minutes**
+**推定時間：20分**
 
-The students will take the information gained in the lessons to configure and subsequently implement security in the Azure Portal and within the *AdventureWorks* database.
+受講者は、レッスンで得た情報をもとに、Azure ポータルおよび *AdventureWorks* データベース内にセキュリティを設定し、その後実装します。
 
-You've been hired as a Senior Database Administrator to help ensure the security of the database environment.
+あなたは、データベース環境のセキュリティを確保するために、シニアデータベース管理者として採用されました。
 
-**Note:** These exercises ask you to copy and paste T-SQL code. Please verify that the code has been copied correctly, before executing the code.
+**注意：** これらの演習では、T-SQL コードをコピーして貼り付けるように要求されます。コードを実行する前に、コードが正しくコピーされたことを確認してください。
 
-## Authorize access to Azure SQL Database with Azure Active Directory
+## Azure Active Directory を使用して、Azure SQL Database へのアクセスを許可する。
 
-1. From the lab virtual machine, start a browser session and navigate to [https://portal.azure.com](https://portal.azure.com/). Connect to the Portal using the Azure **Username** and **Password** provided on the **Resources** tab for this lab virtual machine.
+1. ラボの仮想マシンから、ブラウザー セッションを開始し、[https://portal.azure.com](https://portal.azure.com/) にナビゲートします。このラボ仮想マシンの **Resources** タブで提供される Azure **Username** と **Password** を使用して、ポータルに接続します。
 
     ![Picture 1](../images/dp-300-module-01-lab-01.png)
 
-1. On the Azure portal home page select **All resources**.
+1. Azure ポータルのホーム ページで、**すべてのリソース** を選択します。
 
-    ![Screenshot of the Azure portal home page, selecting All resources](../images/dp-300-module-03-lab-01.png)
+    ![Azure ポータルのホーム ページで、すべてのリソースを選択した画面](../images/dp-300-module-03-lab-01.png)
 
-1. Select the Azure SQL Database server **dp300-lab-xxxxxx**, where **xxxxxx** is a random string, and select **Not Configured** next to **Active Directory Admin**.
+1. Azure SQL Database サーバー **dp300-lab-xxxxxx**（**xxxxxx** はランダムな文字列）を選択し、**Active Directory 管理者** の下にある **構成されていません** を選択します。
 
-    ![Screenshot selecting Not Configured](../images/dp-300-module-03-lab-02.png)
+    ![P未設定を選択した画面](../images/dp-300-module-03-lab-02.png)
 
-1. On the next screen, select **Set admin**.
+1. 次の画面で、**管理者の設定**を選択します。
 
-    ![Screenshot selecting Set admin](../images/dp-300-module-03-lab-03.png)
+    ![P管理者設定を選択した画面](../images/dp-300-module-03-lab-03.png)
 
-1. In the **Azure Active Directory** sidebar, search for the Azure username you logged into the Azure portal with, then click on **Select**.
+1. サイドバーの **Azure Active Directory** で、Azure ポータルにログインした Azure ユーザー名を検索し、**選択** をクリックします。
 
-1. Select **Save** to complete the process. This will make your username the Azure Active Directory admin for the server as shown below.
+1. **保存** を選択し、処理を完了します。これで、以下のようにユーザー名がサーバーのAzure Active Directory管理者になります。
 
-    ![Screenshot of the Active Directory admin page](../images/dp-300-module-03-lab-04.png)
+    Active Directory 管理者ページのスクリーンショット](../images/dp-300-module-03-lab-04.png)
 
-1. On the left select **Overview**, then copy the **Server name**.
+1. 左側の**概要**を選択し、**サーバー名**をコピーします。
 
-    ![Screenshot showing where to copy the server name from](../images/dp-300-module-03-lab-05.png)
+    ![サーバー名をコピーする画面](../images/dp-300-module-03-lab-05.png)
 
-1. Open SQL Server Management Studio and select **Connect** > **Database Engine**. In the **Server name** paste the name of your server. Change the authentication type to **Azure Active Directory Universal with MFA**.
+1. SQL Server Management Studioを開き、**Connect** > **Database Engine**を選択します。**サーバー名**に、サーバー名を貼り付けます。認証の種類を **Azure Active Directory Universal with MFA** に変更します。
 
-    ![Screenshot of the Connect to server dialog](../images/dp-300-module-03-lab-06.png)
+    ![サーバーへの接続ダイアログのスクリーンショット](../images/dp-300-module-03-lab-06.png)
 
-    For the **User name** field, select the Azure **Username** from the **Resources** tab.
+    **ユーザー名**は、**Resources** タブから Azure の **Username** を選択します。
 
-1. Select **Connect**.
+1. **Connect** を選択します。
 
-> [!NOTE]
-> When you first try to sign in to an Azure SQL database your client IP address needs to be added to the firewall. SQL Server Management Studio can do this for you. Use the Azure Portal **password** from the **Resources** tab, then select **Sign in**, choose your Azure credentials and then select **OK**.
-> ![Screenshot of adding the client IP address](../images/dp-300-module-03-lab-07.png)
+> [!注意]。
+> Azure SQL データベースに初めてサインインしようとするとき、クライアント IP アドレスをファイアウォールに追加する必要があります。SQL Server Management Studio を使用すると、この作業を行うことができます。Azure Portal の **Resources** タブから **password** を使用し、**Sign in** を選択して Azure の資格情報を選択し、**OK** を選択します。
 
-## Manage access to database objects
+> ![クライアントIPアドレスの追加画面](../images/dp-300-module-03-lab-07.png)
 
-In this task you will manage access to the database and its objects. The first thing you will do is create two users in the *AdventureWorksLT* database.
+## データベースオブジェクトへのアクセスを管理する
 
-1. Use the **Object Explorer** and expand **Databases**.
-1. Right-click on **AdventureWorksLT**, and select **New Query**.
+このタスクでは、データベースとそのオブジェクトへのアクセスを管理します。最初に行うことは、*AdventureWorksLT* データベースに2人のユーザーを作成することです。
 
-    ![Screenshot of the new query menu option](../images/dp-300-module-03-lab-08.png)
+1. **オブジェクトエクスプローラ**を使用し、**Databases**を展開します。
+1. **AdventureWorksLT**を右クリックし、**New Query**を選択します。
 
-1. In the new query window, copy and paste the below T-SQL into it. Execute the query to create the two users.
+    ![メニューオプションのスクリーンショット](../images/dp-300-module-03-lab-08.png)
+
+1. 新しいクエリウィンドウで、以下のT-SQLをコピーして貼り付けます。2人のユーザーを作成するためにクエリを実行します。
 
     ```sql
     CREATE USER [DP300User1] WITH PASSWORD = 'Azur3Pa$$';
@@ -73,9 +74,9 @@ In this task you will manage access to the database and its objects. The first t
     GO
     ```
 
-    **Note:** These users are created in the scope of the AdventureWorksLT database. Next you will create a custom role and add the users to it.
+    **注：**これらのユーザーは、AdventureWorksLTデータベースのスコープで作成されます。次に、カスタムロールを作成し、ユーザーを追加します。
 
-1. Execute the following T-SQL in the same query window.
+1. 同じクエリウィンドウで、以下のT-SQLを実行します。
 
     ```sql
     CREATE ROLE [SalesReader];
@@ -88,9 +89,9 @@ In this task you will manage access to the database and its objects. The first t
     GO
     ```
 
-    Next create a new stored procedure in the **SalesLT** schema.
+    次に、**SalesLT** スキーマに新しいストアドプロシージャを作成します。
 
-1. Execute the below T-SQL in your query window.
+1. クエリーウィンドウで以下の T-SQL を実行します。
 
     ```sql
     CREATE OR ALTER PROCEDURE SalesLT.DemoProc
@@ -104,20 +105,21 @@ In this task you will manage access to the database and its objects. The first t
     GO
     ```
 
-    Next use the `EXECUTE AS USER` syntax to test out the security. This allows the database engine to execute a query in the context of your user.
+    次に、`EXECUTE AS USER`構文を使って、セキュリティをテストしてみましょう。これにより、データベースエンジンはユーザーのコンテキストでクエリを実行することができます。
 
-1. Execute the following T-SQL.
+1. 以下のT-SQLを実行します。
 
     ```sql
     EXECUTE AS USER = 'DP300User1'
     EXECUTE SalesLT.DemoProc
     ```
 
-    This will fail with the message:
+    これはメッセージとともに失敗します。
 
-    ![Screenshot of the error message, The EXECUTE permission was denied on the object DemoProc](../images/dp-300-module-03-lab-09.png)
+    ![エラーメッセージのスクリーンショット、The EXECUTE permission was denied on the object DemoProc](../images/dp-300-module-03-lab-09.png)
 
-1. Next grant permissions to the role to allow it to execute the store procedure. Execute the below T-SQL.
+
+1. 次に、ロールにストアプロシージャの実行を許可する権限を与えます。以下のT-SQLを実行します。
 
     ```sql
     REVERT;
@@ -125,15 +127,15 @@ In this task you will manage access to the database and its objects. The first t
     GO
     ```
 
-    The first command reverts the execution context back to the database owner.
+    最初のコマンドは、実行コンテキストをデータベース所有者に戻します。
 
-1. Rerun the previous T-SQL.
+1. 前の T-SQL を再実行します。
 
     ```sql
     EXECUTE AS USER = 'DP300User1'
     EXECUTE SalesLT.DemoProc
     ```
 
-    ![Screenshot showing the returned rows of data from the stored procedure](../images/dp-300-module-03-lab-10.png)
+    ストアドプロシージャから返されたデータ行を表示するスクリーンショット](../images/dp-300-module-03-lab-10.png)
 
-In this exercise, you've seen how you can use Azure Active Directory to grant Azure credentials  access to a SQL Server hosted in Azure. You've also used T-SQL statement to create new database users and granted them permissions to run stored procedures.
+この演習では、Azure Active Directory を使用して、Azure でホストされている SQL Server への Azure 認証情報のアクセス権を付与する方法について説明しました。また、T-SQLステートメントを使用して、新しいデータベースユーザーを作成し、ストアドプロシージャーの実行権限を付与しました。
