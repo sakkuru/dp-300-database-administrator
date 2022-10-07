@@ -1,69 +1,69 @@
 ---
 lab:
-    title: 'Lab 12 – Create a CPU status alert for a SQL Server'
-    module: 'Automate database tasks for Azure SQL'
+    title: 'Lab 12 – SQL Server の CPU ステータス アラートを作成する'
+    module: 'Azure SQL のデータベース タスクを自動化する'
 ---
 
-# Create a CPU status alert for a SQL Server on Azure
+# Azure 上の SQL Server の CPU ステータスアラートを作成する
 
-**Estimated Time: 30 minutes**
+**見積もり時間: 30 分**
 
-You have been hired as a Senior Data Engineer to help automate day to day operations of database administration. This automation is to help ensure that the databases for AdventureWorks continue to operate at peak performance as well as provide methods for alerting based on certain criteria.
+あなたは、データベース管理の日常業務を自動化するために、シニアデータエンジニアとして採用されました。この自動化は、AdventureWorksのデータベースが最高のパフォーマンスで動作し続けることを保証するだけでなく、特定の基準に基づいてアラートするための方法を提供することを支援するものです。
 
-## Create an alert when a CPU exceeds an average of 80 percent
+## CPUが平均80パーセントを超えたらアラートを作成する
 
-1. In the search bar at the top of the Azure portal, type **SQL**, and select **SQL databases**. Select the **AdventureWorksLT** database name listed.
+1. Azureポータル上部の検索バーで、**SQL**と入力し、**SQLデータベース**を選択します。表示された **AdventureWorksLT** データベース名を選択します。
 
-    ![Screenshot of selecting a SQL database](../images/dp-300-module-12-lab-01.png)
+    ![SQLデータベースを選択する画面](../images/dp-300-module-12-lab-01.png)
 
-1. On the main blade for the **AdventureWorksLT** database, navigate down to the monitoring section. Select **Alerts**.
+1. **AdventureWorksLT** データベースのメインブレードで、監視セクションまで移動します。**警告**を選択します。
 
-    ![Screenshot of selecting Alerts on the SQL database Overview page](../images/dp-300-module-12-lab-02.png)
+    ![SQLデータベースの概要ページでAlertsを選択する画面](../images/dp-300-module-12-lab-02.png)
 
-1. Select **Create alert rule**.
+1. **アラートルールの作成**を選択します。
 
-    ![Screenshot of selecting New alert rule](../images/dp-300-module-12-lab-03.png)
+    ![新規アラートルールを選択した画面](../images/dp-300-module-12-lab-03.png)
 
-1. In the **Select a signal** slide out, select **CPU percentage**.
+1. **シグナルの選択** スライドアウトで **CPU percentage** を選択します。
 
-    ![Screenshot of selecting CPU percentage](../images/dp-300-module-12-lab-04.png)
+    ![CPUパーセンテージを選択した画面](../images/dp-300-module-12-lab-04.png)
 
-1. In the **Configure signal** slide out, select **Static** for the **Threshold** property. Then check that the **Operator** property is **Greater than**, the **Aggregation** type is **Average**. Then in **Threshold value** enter a value of **80**. Select **Done**.
+1. **しきい値** プロパティに **Static** を選択します。次に、**演算子** プロパティが **次の値より大きい** で、**集計の種類** タイプが **平均** であることを確認します。次に **しきい値** に **80** という値を入力します。**次へ**を選択します。
 
-    ![Screenshot of entering 80 and selecting Done](../images/dp-300-module-12-lab-05.png)
+    ![80を入力してDoneを選択した画面](../images/dp-300-module-12-lab-05.png)
 
-1. Select the **Actions** tab.
+1. **アクション**タブを選択します。
 
-    ![Screenshot of selecting the Select action group link](../images/dp-300-module-12-lab-06.png)
+    ![アクショングループの選択リンクを選択した画面](../images/dp-300-module-12-lab-06.png)
 
-1. In the **Actions** tab, select **Create action group**.
+1. **アクション**タブで、[アクショングループの作成]**を選択する。
 
-    ![Screenshot of selecting the Create action group](../images/dp-300-module-12-lab-07.png)
+    ![アクショングループの作成を選択した画面](../images/dp-300-module-12-lab-07.png)
 
-1. On the **Action Group** screen, type **emailgroup** in the **Action group name** field, and then select **Next: Notifications**.
+1. **アクショングループ**の画面で、**アクショングループ名**の欄に**emailgroup**と入力し、**次へ**を選択します。**通知**を選択します。
 
-    ![Screenshot of entering emailgroup and selecting Next: Notifications](../images/dp-300-module-12-lab-08.png)
+    ![emailgroupを入力し、Next: Notificationsを選択した画面](../images/dp-300-module-12-lab-08.png)
 
-1. On the **Notifications** tab, enter the following information:
+1. **通知**タブで、以下の情報を入力します。
 
-    - **Notification type:** Email/SMS message/Push/Voice
-        - **Note:** When you select this option, a Email/SMS message/Push/Voice flyout will appear. Check the Email property and type the Azure username you signed in with.
-    - **Name:** DemoLab
+    - **通知タイプ：** 電子メール/SMSメッセージ/プッシュ/音声
+        - **Note:** このオプションを選択すると、Email/SMS メッセージ/Push/Voice のフライアウトが表示されます。Email プロパティをチェックし、サインインした Azure ユーザー名を入力します。
+    - **名前:** DemoLab
 
-    ![Screenshot of the Create action group page with information added](../images/dp-300-module-12-lab-09.png)
+    ![情報を追加したアクショングループ作成ページのスクリーンショット](../images/dp-300-module-12-lab-09.png)
 
-1. Select **Review + create**, then select **Create**.
+1. **確認と作成**を選択し、**作成**を選択します。
 
-    ![Screenshot of the Create alert rule page selecting the Create alert rule](../images/dp-300-module-12-lab-10.png)
+    ![アラートルールの作成を選択したアラートルール作成ページの画面](../images/dp-300-module-12-lab-10.png)
 
-    **Note:** Before you select **Create**, you can also select **Test action group (preview)** to test the Alert.
+    **注意:** **作成** を選択する前に、**Test action group (preview)** を選択してアラートをテストすることも可能です。
 
-1. An email like this is sent to the email address that you entered, once the rule is created.
+1. ルールが作成されると、入力したメールアドレスにこのようなメールが送信されます。
 
-    ![Screenshot of the confirmation email](../images/dp-300-module-12-lab-11.png)
+    ![確認メールのスクリーンショット](../images/dp-300-module-12-lab-11.png)
 
-    With the alert in place, if the CPU usage on average exceeds 80%, an email like this is sent.
+    アラートを設定すると、CPU使用率が平均で80%を超えると、このようなメールが送信されます。
 
-    ![Screenshot of the warning email](../images/dp-300-module-12-lab-12.png)
+    ![警告メールのスクリーンショット](../images/dp-300-module-12-lab-12.png)
 
-Alerts can send you an email or call a web hook when some metric (for example database size or CPU usage) reaches a threshold you define. You've just seen how you can easily configure alerts for Azure SQL Databases.
+アラートは、ある指標（例えばデータベースサイズやCPU使用率など）が定義した閾値に達すると、メールを送信したり、Webフックを呼び出したりすることができます。ここまでで、Azure SQL Databasesのアラートを簡単に設定する方法を確認しました。
