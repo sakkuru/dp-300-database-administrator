@@ -1,124 +1,125 @@
 ---
 lab:
-    title: 'Lab 1 - Provision SQL Server on an Azure Virtual Machine'
-    module: 'Plan and Implement Data Platform Resources'
+    title: 'Lab 1 - Provision SQL Server on Azure Virtual Machine'.
+    module: 'データ プラットフォーム リソースを計画および実装する'
 ---
 
-# Provision a SQL Server on an Azure Virtual Machine
+# Azure 仮想マシン上で SQL サーバーをプロビジョニングする
 
-**Estimated Time: 30 minutes**
+**見積もり時間: 30 分**
 
-Students will explore the Azure Portal and use it to create an Azure VM with SQL Server 2019 installed. Then they will connect to the virtual machine through Remote Desktop Protocol.
+受講者は、Azureポータルを探索し、それを使用してSQL Server 2019がインストールされたAzure VMを作成します。その後、リモートデスクトッププロトコルを使用して仮想マシンに接続します。
 
-You are a database administrator for AdventureWorks. You need to create a test environment for use in a proof of concept. The proof of concept will use SQL Server on an Azure Virtual Machine and a backup of the AdventureWorksDW database. You need to set up the Virtual Machine, restore the database, and query it to ensure it is available.
+あなたはAdventureWorksのデータベース管理者です。あなたは概念実証で使用するためのテスト環境を作成する必要があります。概念実証では、Azure仮想マシン上のSQL Serverと、AdventureWorksDWデータベースのバックアップを使用する予定です。仮想マシンをセットアップし、データベースを復元し、利用可能であることを確認するためにクエリを実行する必要があります。
 
-## Deploy a SQL Server on an Azure Virtual Machine
+## Azure 仮想マシンに SQL Server を導入する。
 
-1. From the lab virtual machine, start a browser session and navigate to [https://portal.azure.com](https://portal.azure.com/), and sign in using the Microsoft account associated with your Azure subscription.
+1. ラボ仮想マシンから、ブラウザセッションを開始し、[https://portal.azure.com](https://portal.azure.com/) に移動し、Azure サブスクリプションに関連付けられた Microsoft アカウントを使用してサインインします。
 
     ![Picture 1](../images/dp-300-module-01-lab-01.png)
 
-1. Locate the search bar at the top of the page. Search for **Azure SQL**. Select the search result for **Azure SQL** that appears in the results under **Services**.
+1. ページの上部にある検索バーを探します。**Azure SQL** を検索します。サービス]の下に表示される[Azure SQL]の検索結果を選択します。
 
     ![Picture 9](../images/dp-300-module-01-lab-09.png)
 
-1. On the **Azure SQL** blade, select **Create**.
+1. **Azure SQL**ブレードで、**作成**を選択します。
 
     ![Picture 10](../images/dp-300-module-01-lab-10.png)
 
-1. On the **Select SQL deployment option** blade, click on the drop-down box under **SQL virtual machines**. Select the option labeled **Free SQL Server License: SQL 2019 Developer on Windows Server 2022**. Then select **Create**.
+1. **SQL展開オプションの選択**ブレードで、**SQL仮想マシン** の下にあるドロップダウン・ボックスをクリックします。Free SQL Server Licenseと書かれたオプションを選択します。**SQL 2019 Developer on Windows Server 2022**と書かれたオプションを選択します。その後、**作成**を選択します。
 
     ![Picture 11](../images/dp-300-module-01-lab-11.png)
 
-1. On the **Create a virtual machine** page, enter the following information:
+1. **仮想マシンの作成**ページで、以下の情報を入力します。
 
-    - **Subscription:** &lt;Your subscription&gt;
-    - **Resource group:** &lt;Your resource group&gt;
-    - **Virtual machine name:**  azureSQLServerVM
-    - **Region:** &lt;your local region, same as the selected region for your resource group&gt;
-    - **Availability Options:** No infrastructure redundancy required
-    - **Image:** Free SQL Server License: SQL 2019 Developer on Windows Server 2022 - Gen1
-    - **Azure spot instance:** No (unchecked)
-    - **Size:** Standard *D2s_v3* (2 vCPUs, 8 GiB memory). You may need to select the "See all sizes" link to see this option)
-    - **Administrator account username:** sqladmin
-    - **Administrator account password:** pwd!DP300lab01 (or your own password that meets the criteria)
-    - **Select inbound ports:** RDP (3389)
-    - **Would you like to use an existing Windows Server license?:** No (unchecked)
+    - サブスクリプション: **&lt;Your subscription&gt;**
+    - リソースグループ:**&lt;Your resource group&gt;**
+    - 仮想マシン名:**azureSQLServerVM**
+    - **Region:** &lt;リソースグループと同じリージョン&gt;
+    - **可用性オプション:**インフラストラクチャ冗長必要ありません**
+    - **イメージ:** Free SQL Server License: SQL Server 2019 Developer on Windows Server 2022 - Gen1
+    - **Spot割引:** チェックしない
+    - **Size:** Standard *D2s_v3* (2 vCPU, 8 GiB memory)です。このオプションを表示するには、"See all sizes" リンクを選択する必要がある場合があります)
+    - **管理者アカウントのユーザー名:** **sqladmin**
+    - **管理者アカウントのパスワード:**pwd!DP300lab01** (または条件を満たす独自のパスワード)
+    - **受信ポート:** RDP (3389)を選択します。
+    - **既存の Windows Server ライセンスを使用しますか?:** チェックしない
 
-    Make note of the username and password for later use.
+    ユーザー名とパスワードは、後で使用するためにメモしておいてください。
 
     ![Picture 12](../images/dp-300-module-01-lab-12.png)
 
-1. Navigate to the **Disks** tab and review the configuration.
+1. **ディスク** タブに移動し、設定を確認します。
 
     ![Picture 13](../images/dp-300-module-01-lab-13.png)
 
-1. Navigate to the **Networking** tab and review the configuration.
+1. **ネットワーク** タブを開き、設定を確認します。
 
     ![Picture 14](../images/dp-300-module-01-lab-14.png)
 
-1. Navigate to the **Management** tab and review the configuration.
+1. **管理**タブを開き、設定を確認します。
 
     ![Picture 15](../images/dp-300-module-01-lab-15.png)
 
-    Verify that **Enable auto_shutdown** is unchecked.
+    **自動シャットダウンを有効にする**のチェックが外れていることを確認します。
 
-1. Navigate to the **Advanced** tab and review the configuration.
+1. 1. **Advanced** タブに移動し、設定を確認します。
 
     ![Picture 16](../images/dp-300-module-01-lab-16.png)
 
-1. Navigate to the **SQL Server settings** tab and review the configuration.
+1. **SQL Server の設定** タブを開き、設定を確認します。
 
     ![Picture 17](../images/dp-300-module-01-lab-17.png)
 
-    **Note —** you can also configure the storage for your SQL Server VM on this screen. By default, the SQL Server Azure VM templates create one premium disk with read caching for data, one premium disk without caching for transaction log, and uses the local SSD (D:\ on Windows) for tempdb.
+    **注意 -** この画面では、SQL Server VM のストレージを設定することもできます。デフォルトでは、SQL Server Azure VM テンプレートは、データ用にリードキャッシュ付きのプレミアムディスクを 1 つ、トランザクションログ用にキャッシュなしのプレミアムディスクを 1 つ作成し、 tempdb 用にローカル SSD (Windows では D:\) を使用します。
 
-1. Select the **Review + create** button. Then select **Create**.
+1. **確認および作成**ボタンを選択します。次に**作成**を選択します。
 
     ![Picture 18](../images/dp-300-module-01-lab-18.png)
 
-1. On the deployment blade, wait until the deployment is complete. The VM will take approximate 5-10 minutes to deploy. After the deployment is complete, select  **Go to resource**.
+1. デプロイメントブレード上で、デプロイが完了するまで待ちます。VMのデプロイにはおよそ5～10分かかります。デプロイメントが完了したら、**Go to resource**を選択します。
 
-    **Note:** Your deployment may take several minutes to complete.
+    **注意:** デプロイが完了するまでに数分かかる場合があります。
 
     ![Picture 19](../images/dp-300-module-01-lab-19.png)
 
-1. On the **Overview** page for the virtual machine, explore the menu options for this resource to review what is available.
+1. 仮想マシンの**概要**ページで、このリソースのメニューオプションを確認し、利用可能なものを確認します。
 
     ![Picture 20](../images/dp-300-module-01-lab-20.png)
 
-## Connect to SQL Server on an Azure Virtual Machine
+## Azure 仮想マシンの SQL Server に接続する
 
-1. On the **Overview** page for the virtual machine, select the **Connect** button and choose RDP.
+1. 仮想マシンの **概要** ページで、**接続** ボタンを選択し、RDP を選択します。
 
     ![Picture 21](../images/dp-300-module-01-lab-21.png)
 
-1. On the RDP tab, select the **Download RDP File** button.
+1. RDPタブで、**Download RDP File**ボタンを選択します。
 
     ![Picture 22](../images/dp-300-module-01-lab-22.png)
 
-    **Note:** If see the error **Port prerequisite not met**. Make sure to select the link to add an inbound network security group rule with the destination port mentioned in the *Port number* field.
+    **注意:** Port prerequisite not met**というエラーが表示された場合。必ずリンクを選択して、*ポート番号*フィールドに記載された宛先ポートを持つ受信ネットワークセキュリティグループルールを追加してください。
 
     ![Picture 22_1](../images/dp-300-module-01-lab-22_1.png)
 
-1. Open the RDP file that was just downloaded. When a dialog appears asking if you want to connect, select **Connect**.
+
+1. 先ほどダウンロードしたRDPファイルを開きます。接続するかどうかのダイアログが表示されたら、**接続**を選択します。
 
     ![Picture 23](../images/dp-300-module-01-lab-23.png)
 
-1. Enter the username and password selected during the virtual machine provisioning process. Then select **OK**.
+1. 仮想マシンのプロビジョニングプロセスで選択したユーザー名とパスワードを入力します。その後、**OK**を選択します。
 
     ![Picture 24](../images/dp-300-module-01-lab-24.png)
 
-1. When the **Remote Desktop Connection** dialog appears asking if you want to connect, select **Yes**.
+1. **リモートデスクトップ接続**のダイアログが表示されたら、**Yes**を選択します。
 
     ![Picture 26](../images/dp-300-module-01-lab-26.png)
 
-1. Select the Windows Start button and type SSMS. Select **Microsoft SQL Server Management Studio 18** from the list.  
+1. Windowsのスタートボタンを選択し、SSMSと入力します。リストから **Microsoft SQL Server Management Studio 18** を選択します。 
 
     ![Picture 34](../images/dp-300-module-01-lab-34.png)
 
-1. When SSMS opens, notice that the **Connect to Server** dialog will be pre-populated with the default instance name. Select **Connect**.
+1. SSMSが開くと、**Connect to Server** ダイアログにデフォルトのインスタンス名が事前に入力されていることに注意してください。**Connect**を選択します。
 
     ![Picture 35](../images/dp-300-module-01-lab-35.png)
 
-The Azure portal gives you powerful tools to manage a SQL Server hosted in a virtual machine. These tools include control over automated patching, automated backups, and giving you an easy way to setup high availability.
+Azureポータルには、仮想マシンでホストされているSQL Serverを管理するための強力なツールが用意されています。これらのツールには、自動パッチ適用、自動バックアップの制御、高可用性の簡単なセットアップ方法などが含まれます。
