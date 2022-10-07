@@ -1,38 +1,36 @@
 ---
 lab:
-    title: 'Lab 9 – Identify database design issues'
-    module: 'Optimize query performance in Azure SQL'
+    title: 'Lab 9 – データベース設計の問題を特定する'
+    module: 'Azure SQL でクエリ パフォーマンスを最適化する'
 ---
 
-# Identify database design issues
+# データベース設計の問題を特定する
 
-**Estimated Time: 15 minutes**
+**見積もり時間：15 分**
 
-The students will take the information gained in the lessons to scope out the deliverables for a digital transformation project within AdventureWorks. Examining the Azure portal as well as other tools, students will determine how to utilize native tools to identify and resolve performance related issues. Finally, students will be able to evaluate a database design for problems with normalization, data type selection and index design.
+受講者は、レッスンで得た情報をもとに、AdventureWorks内のデジタルトランスフォーメーションプロジェクトの成果物のスコープを設定します。Azureポータルやその他のツールを検証し、ネイティブツールを活用してパフォーマンス関連の問題を特定し解決する方法を決定します。最後に、正規化、データ型選択、インデックス設計に問題がないか、データベース設計を評価できるようになります。
 
-You have been hired as a database administrator to identify performance related issues and provide viable solutions to resolve any issues found. AdventureWorks has been selling bicycles and bicycle parts directly to consumers and distributors for over a decade. Your job is to identify issues in query performance and remedy them using techniques learned in this module.
+あなたは、パフォーマンス関連の問題を特定し、発見された問題を解決するための実行可能なソリューションを提供するデータベース管理者として採用されました。AdventureWorks は、10 年以上にわたり、自転車と自転車部品を消費者と販売店に直販しています。あなたの仕事は、クエリパフォーマンスの問題を特定し、このモジュールで学んだテクニックを使用してそれらを改善することです。
 
-**Note:** These exercises ask you to copy and paste T-SQL code. Please verify that the code has been copied correctly, before executing the code.
+**注意：**これらの演習では、T-SQL コードをコピーして貼り付けるよう求められます。コードを実行する前に、コードが正しくコピーされたことを確認してください。
 
-## Restore a database
+## データベースの復元
 
-1. Download the database backup file located on **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorks2017.bak** to **C:\LabFiles\Monitor and optimize** path on the lab virtual machine (create the folder structure if it does not exist).
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorks2017.bak** にあるデータベースのバックアップファイルをラボ仮想マシン上の **C:\LabFiles\Monitor and optimize** パスにダウンロードします（存在しない場合はフォルダ構造を作成します）。
 
     ![Picture 03](../images/dp-300-module-07-lab-03.png)
 
-1. Select the Windows Start button and type SSMS. Select **Microsoft SQL Server Management Studio 18** from the list.  
+1. Windowsのスタートボタンを選択し、SSMSと入力します。リストから **Microsoft SQL Server Management Studio 18** を選択します。 
 
-    ![Picture 01](../images/dp-300-module-01-lab-34.png)
-
-1. When SSMS opens, notice that the **Connect to Server** dialog will be pre-populated with the default instance name. Select **Connect**.
+1. SSMSが開くと、**Connect to Server** ダイアログにデフォルトのインスタンス名が事前に入力されていることに注意してください。Connect**を選択します。
 
     ![Picture 02](../images/dp-300-module-07-lab-01.png)
 
-1. Select the **Databases** folder, and then **New Query**.
+1. **Databases** フォルダを選択し、**New Query** を選択します。
 
     ![Picture 03](../images/dp-300-module-07-lab-04.png)
 
-1. In the new query window, copy and paste the below T-SQL into it. Execute the query to restore the database.
+1. 新しいクエリウィンドウで、以下のT-SQLをコピーして貼り付けます。データベースを復元するためにクエリを実行する。
 
     ```sql
     RESTORE DATABASE AdventureWorks2017
@@ -44,15 +42,15 @@ You have been hired as a database administrator to identify performance related 
             TO 'C:\LabFiles\Monitor and optimize\AdventureWorks2017_log.ldf';
     ```
 
-    **Note:** The database backup file name and path should match with what you've downloaded on step 1, otherwise the command will fail.
+    **注意：** データベースのバックアップファイルの名前とパスは、ステップ1でダウンロードしたものと一致させる必要があります。
 
-1. You should see a successful message after the restore is complete.
+1. リストア完了後、成功のメッセージが表示されるはずです。
 
     ![Picture 03](../images/dp-300-module-07-lab-05.png)
 
-## Examine the query and identify the problem
+## クエリを調べて問題を特定する
 
-1. Select **New Query**. Copy and paste the following T-SQL code into the query window. Select **Execute** to execute this query.
+1. **新規クエリ**を選択します。以下の T-SQL コードをコピーしてクエリウィンドウに貼り付けます。実行**を選択し、このクエリを実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -63,17 +61,17 @@ You have been hired as a database administrator to identify performance related 
     WHERE NationalIDNumber = 14417807;
     ```
 
-1. Select **Include Actual Execution Plan** icon as shown below before running the query or press **CTRL+M**. This will cause the execution plan to be displayed when you execute the query. Select **Execute** to execute this query.
+1. クエリを実行する前に、下図のように **実際の実行計画を含める** アイコンを選択するか、**CTRL+M** を押してください。これにより、クエリの実行時に実行プランが表示されます。このクエリを実行するには、**Execute** を選択します。
 
     ![Picture 01](../images/dp-300-module-09-lab-01.png)
 
-1. Navigate to the execution plan, by selecting the **Execution plan** tab in the results panel. In the execution plan, mouse over the `SELECT` operator. You will notice a warning message identified by an exclamation point in a yellow triangle as shown below. Identify what the warning message tells you.
+1. 結果パネルの**実行計画**タブを選択し、実行計画に移動します。実行計画で、`SELECT`演算子にマウスオーバーします。下図のように、黄色い三角形の中に感嘆符が表示された警告メッセージが表示されます。警告メッセージの内容を確認してください。
 
     ![Picture 02](../images/dp-300-module-09-lab-02.png)
 
-## Identify ways to fix the warning message
+## 警告メッセージを修正する方法を確認する
 
-The *[HumanResources].[Employee]* table structure is shown in the follow data definition language (DDL) statement. Review the fields that are used in the previous SQL query against this DDL, paying attention to their types.
+*[HumanResources].[Employee]* テーブルの構造は、以下のデータ定義言語（DDL）ステートメントに示されています。このDDLに対して、前のSQLクエリで使用されているフィールドを、その型に注意しながら確認してください。
 
 ```sql
 CREATE TABLE [HumanResources].[Employee](
@@ -96,10 +94,11 @@ CREATE TABLE [HumanResources].[Employee](
 ) ON [PRIMARY]
 ```
 
-1. According to the warning message presented in the execution plan, what change would you recommend?
 
-    1. Identify what field is causing the implicit conversion and why. 
-    1. If you review the query:
+1. 実行計画書に示された警告メッセージによると、どのような変更を推奨しますか。
+
+    1. どのフィールドが暗黙の変換を引き起こしているのか、またその理由を特定してください。
+    1. 以下のクエリを確認します。
 
         ```sql
         SELECT BusinessEntityID, NationalIDNumber, LoginID, HireDate, JobTitle
@@ -107,21 +106,21 @@ CREATE TABLE [HumanResources].[Employee](
         WHERE NationalIDNumber = 14417807;
         ```
 
-        You'll note that the value compared to the *NationalIDNumber* column in the `WHERE` clause is compared as a number, since **14417807** isn't in a quoted string. 
+        **14417807** は引用符で囲まれた文字列ではないので、`WHERE`句の *NationalIDNumber* カラムと比較される値は数値として比較されることに注意してください。
 
-        After examining the table structure you will find the *NationalIDNumber* column is using the `NVARCHAR` data type and not an `INT` data type. This inconsistency causes the database optimizer to implicitly convert the number to a `NVARCHAR` value, causing additional overhead to the query performance by creating a suboptimal plan.
+        テーブルの構造を調べてみると、*NationalIDNumber* カラムは `INT` データ型ではなく `NVARCHAR` データ型を使っていることがわかります。この不整合により、データベースオプティマイザは暗黙のうちに数値を `NVARCHAR` 値に変換し、最適でない計画を作成してクエリパフォーマンスにさらなるオーバーヘッドを発生させることになります。
 
-There are two approaches we can implement to fix the implicit conversion warning. We will investigate each of them in the next steps.
+暗黙の変換警告を修正するために、2つのアプローチを実装することができます。次のステップで、それぞれを調査します。
 
-### Change the code
+### コードを変更する
 
-1. How would you change the code to resolve the implicit conversion? Change the code and rerun the query.
+1. 暗黙の変換を解決するために、コードをどのように変更しますか？コードを変更し、クエリを再実行します。
 
-    Remember to turn on the **Include Actual Execution Plan** (**CTRL+M**) if it is not already on. 
+    まだオンになっていない場合は、**実際の実行計画を含める** (**CTRL+M**)をオンにすることを忘れないでください。
 
-    In this scenario, just adding a single quote on each side of the value changes it from a number to a character format. Keep the query window open for this query.
+    このシナリオでは、値の両側にシングルクォートを追加するだけで、数値から文字フォーマットに変更されます。このクエリのクエリウィンドウを開いたままにしておきます。
 
-    Run the updated SQL query:
+    更新されたSQLクエリを実行します。
 
     ```sql
     SELECT BusinessEntityID, NationalIDNumber, LoginID, HireDate, JobTitle
@@ -131,25 +130,25 @@ There are two approaches we can implement to fix the implicit conversion warning
 
     ![Picture 03](../images/dp-300-module-09-lab-03.png)
 
-    **Note:** the warning message is now gone, and the query plan has improved. Changing the `WHERE` clause so that the value compared to the *NationalIDNumber* column matches the column's data type in the table, the optimizer was able to get rid of the implicit conversion.
+    **注意:** 警告メッセージはなくなり、クエリプランは改善されました。`WHERE` 節を変更して、*NationalIDNumber* 列と比較される値がテーブル内の列のデータ型と一致するようにしたところ、オプティマイザは暗黙の変換を取り除くことができました。
 
 ### Change the data type
 
-1. We can also fix the implicit conversion warning by changing the table structure.
+1. テーブルの構造を変更することで、暗黙の変換警告を修正することができます。
 
-    To attempt to fix the index, copy and paste the query below into a new query window, to change the column's data type. Attempt to execute the query, by selecting **Execute** or pressing <kbd>F5</kbd>.
+    インデックスの修正を試みるには、以下のクエリを新しいクエリウィンドウにコピー＆ペーストして、カラムのデータ型を変更します。**実行**を選択するか、<kbd>F5</kbd>キーを押して、クエリを実行してみてください。
 
     ```sql
     ALTER TABLE [HumanResources].[Employee] ALTER COLUMN [NationalIDNumber] INT NOT NULL;
     ```
 
-    Changing the *NationalIDNumber* column data type to INT would solve the conversion issue. However, this change introduces another issue that as a database administrator you need to resolve.
+    *NationalIDNumber* 列のデータ型を INT に変更すれば、変換の問題は解決されます。しかし、この変更により、データベース管理者として解決しなければならない別の問題が発生します。
 
     ![Picture 04](../images/dp-300-module-09-lab-04.png)
 
-    The *NationalIDNumber* column is part of an already existing nonclustered index, the index has to be rebuilt/recreated in order to change the data type. **This could lead to extended downtime in production, which highlights the importance of choosing the right data types in your design.**
+    *NationalIDNumber* カラムは、すでに存在する非クラスタ化インデックスの一部であり、データ型を変更するためにインデックスの再構築/再作成が必要です。**これは、設計において正しいデータ型を選択することの重要性を強調するものです**。
 
-1. In order to resolve this issue, copy and paste the code below into your query window and execute it by selecting **Execute**.
+1. この問題を解決するには、以下のコードをクエリウィンドウにコピー＆ペーストし、**実行**を選択して実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -168,7 +167,7 @@ There are two approaches we can implement to fix the implicit conversion warning
     GO
     ```
 
-1. Alternatively, you can run the query below to confirm that the data type was successfully changed.
+1. また、以下のクエリを実行することで、データ型が正常に変更されたことを確認することができます。
 
     ```sql
     SELECT c.name, t.name
@@ -180,7 +179,7 @@ There are two approaches we can implement to fix the implicit conversion warning
     
     ![Picture 05](../images/dp-300-module-09-lab-05.png)
     
-1. Now let's check the execution plan. Rerun the original query without the quotes.
+1. では、実行計画を確認してみましょう。元のクエリを引用符を付けずに再実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -193,6 +192,6 @@ There are two approaches we can implement to fix the implicit conversion warning
 
     ![Picture 06](../images/dp-300-module-09-lab-06.png)
 
-    Examine the query plan, and note that you can now use an integer to filter by *NationalIDNumber* without the implicit conversion warning. The SQL query optimizer can now generate and execute the most optimal plan.
+    クエリプランを調べて、暗黙の変換警告を出さずに、*NationalIDNumber*でフィルタリングするために整数を使用できることに注意してください。SQLクエリオプティマイザは、最適な計画を生成し実行できるようになりました。
 
-In this exercise, you've learned how to identify query problems caused by implicit data type conversions, and how to fix it to improve the query plan.
+この演習では、暗黙のデータ型変換が原因で発生するクエリの問題を特定する方法と、それを修正してクエリ・プランを改善する方法を学習しました。
