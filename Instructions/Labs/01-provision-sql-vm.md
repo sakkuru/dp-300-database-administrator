@@ -1,7 +1,7 @@
 ---
 lab:
-    title: 'Lab 1 - Provision SQL Server on Azure Virtual Machine'.
-    module: 'データ プラットフォーム リソースを計画および実装する'
+    title: 'Lab 1 - Azure仮想マシンにSQL Serverをプロビジョニングする'
+    module:  'データ プラットフォーム リソースを計画および実装する'
 ---
 
 # Azure 仮想マシン上で SQL サーバーをプロビジョニングする
