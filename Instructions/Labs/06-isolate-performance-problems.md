@@ -1,60 +1,56 @@
 ---
 lab:
-    title: 'Lab 6 – Isolate performance problems through monitoring'
-    module: 'Monitor and optimize operational resources in Azure SQL'
+    title: 'Lab 6 – 監視によるパフォーマンス問題の特定'
+    module: 'Azure SQL の運用リソースの監視と最適化'
 ---
 
-# Isolate performance problems through monitoring
+# モニタリングでパフォーマンスの問題を特定する
 
-**Estimated Time: 30 minutes**
+**推定時間：30分**
 
-The students will take the information gained in the lessons to scope out the deliverables for a digital transformation project within AdventureWorks. Examining the Azure portal as well as other tools, students will determine how to utilize tools to identify and resolve performance related issues.
+受講者は、レッスンで得た情報をもとに、AdventureWorks社内のデジタル変革プロジェクトにおける成果物のスコープを設定します。Azureポータルやその他のツールを検証し、パフォーマンス関連の問題を特定し解決するためのツールの活用方法を決定します。
 
-You have been hired as a database administrator to identify performance related issues and provide viable solutions to resolve any issues found. You need to use the Azure portal to identify the performance issues and suggest methods to resolve them.
+あなたは、データベース管理者として、パフォーマンス関連の問題を特定し、発見された問題を解決するための実行可能なソリューションを提供するために採用されました。あなたは、Azureポータルを使用して、パフォーマンスの問題を特定し、それらを解決するための方法を提案する必要があります。
 
-**Note:** These exercises ask you to copy and paste T-SQL code. Please verify that the code has been copied correctly, before executing the code.
+**注意：** これらの演習では、T-SQL コードをコピーして貼り付けるよう求められます。コードを実行する前に、コードが正しくコピーされたことを確認してください。
 
-## Review CPU utilization in Azure portal
+## AzureポータルのCPU使用率を確認する
 
-1. From the lab virtual machine, start a browser session and navigate to [https://portal.azure.com](https://portal.azure.com/). Connect to the Portal using the Azure **Username** and **Password** provided on the **Resources** tab for this lab virtual machine.
+1. ラボの仮想マシンから、ブラウザ セッションを開始し、[https://portal.azure.com](https://portal.azure.com/) にナビゲートします。このラボ仮想マシンの **Resources** タブで提供された Azure **Username** と **Password** を使用して、ポータルに接続します。
 
-    ![Picture 1](../images/dp-300-module-01-lab-01.png)
+1. Azure ポータルから、上部の検索ボックスで「SQL サーバー」を検索し、オプションの一覧から **SQL サーバー** をクリックします。
 
-1. From the Azure Portal, search for “SQL servers” in the search box at the top, then click **SQL servers** from the list of options.
+    ![ソーシャルメディアへの投稿画面 説明が自動生成される](../images/dp-300-module-04-lab-1.png)
 
-    ![A screenshot of a social media post Description automatically generated](../images/dp-300-module-04-lab-1.png)
+1. サーバー名 **dp300-lab-XXXXXXXX** を選択して、詳細ページを表示します（SQLサーバーには別のリソースグループと場所が割り当てられている場合があります）。
 
-1. Select the server name **dp300-lab-XXXXXXXX** to be taken to the detail page (you may have a different resource group and location assigned for your SQL server).
+    ![ソーシャルメディアへの投稿画面 自動生成された説明文](../images/dp-300-module-04-lab-2.png)
 
-    ![A screenshot of a social media post Description automatically generated](../images/dp-300-module-04-lab-2.png)
+1. Azure SQLサーバーのメインブレードから、**設定**セクションに移動し、**SQLデータベース**を選択し、データベース名を選択します。
 
-1. From the main blade of your Azure SQL server, navigate to the **Settings** section, and select **SQL databases**, and then select the database name.
+    ![AdventureWOrksLTデータベースを選択する画面](../images/dp-300-module-05-lab-04.png)
 
-    ![Screenshot showing selecting the AdventureWOrksLT database](../images/dp-300-module-05-lab-04.png)
+1. データベースのメインページで、**サーバーファイアウォールの設定**を選択します。
 
-1. On the database main page, select **Set server firewall**.
+    ![サーバーファイアウォールの設定](.../images/dp-300-module-06-lab-01.png)
 
-    ![Screenshot showing selecting Set server firewall](../images/dp-300-module-06-lab-01.png)
+1. **ネットワーク**ページで、**+ クライアントIPv4アドレスの追加**を選択し、**保存**を選択します。
 
-1. On the **Networking** page, select **+ Add your client IPv4 address (your IP address)**, then select **Save**.
+    ![クライアントIPの追加を選択した画面](../images/dp-300-module-06-lab-02.png)
 
-    ![Screenshot showing selecting Add client IP](../images/dp-300-module-06-lab-02.png)
+1. 右上のアイコンから、**ネットワーク**ページを閉じます。
 
-1. In the navigation above **Networking**, select the link that begins with **AdventureWorksLT**.
+1. 左側のナビゲーションで、 **クエリエディタ（プレビュー）** を選択します。
 
-    ![Screenshot showing selecting AdventureWorks](../images/dp-300-module-06-lab-03.png)
+    ![クエリエディタ(プレビュー)のリンクを選択した画面](../images/dp-300-module-06-lab-04.png)
 
-1. In the left navigation, select **Query editor (preview)**.
+    **注意：** この機能はプレビュー版です。
 
-    ![Screenshot showing selecting the query editor (preview) link](../images/dp-300-module-06-lab-04.png)
+1. **Password** に **P@ssw0rd01** と入力し、**OK** を選択します。
 
-    **Note:** This feature is in preview.
+    クエリエディタの接続プロパティを表示するスクリーンショット](../images/dp-300-module-06-lab-05.png)
 
-1. In **Password**, type **P@ssw0rd01** and select **OK**.
-
-    ![Screenshot showing Query editor connection properties](../images/dp-300-module-06-lab-05.png)
-
-1. In **Query 1**, type the following query, and select **Run**:
+1. **クエリ1**に以下のクエリを入力し、**実行**を選択します。
 
     ```sql
     DECLARE @Counter INT 
@@ -77,38 +73,36 @@ You have been hired as a database administrator to identify performance related 
     END
     ```
 
-    ![Screenshot showing the Query](../images/dp-300-module-06-lab-06.png)
+    ![クエリを表示するスクリーンショット](../images/dp-300-module-06-lab-06.png)
 
-1. Wait for the query to complete.
+1. クエリが完了するのを待ちます。
 
-1. On the blade for the **AdventureWorksLT** database, select the **Metrics** icon on the **Monitoring** section.
+1. AdventureWorksLT** データベースのブレードで、**監視** セクションの **メトリック** アイコンを選択します。
 
-    ![Screenshot showing selecting the Metrics icon](../images/dp-300-module-06-lab-07.png)
+    ![メトリクスアイコンを選択した画面](../images/dp-300-module-06-lab-07.png)
 
-1. Change the **Metric** menu option to reflect **CPU Percentage**, then select an **Aggregation** of **Avg**. This will display the average CPU Percentage for the given time frame.
+1. メニューの**メトリック**を**CPU Percentage**に変更し、**平均**を選択します。これにより、指定された時間枠の平均CPUパーセンテージが表示されます。
 
-    ![Screenshot showing CPU Percentage](../images/dp-300-module-06-lab-08.png)
+    ![CPUパーセンテージを表示するスクリーンショット](../images/dp-300-module-06-lab-08.png)
 
-1. Observe the the CPU average across time. You may slightly different results. Alternatively, you can run the query multiple times to obtain a more substantial results.
+1. CPUの平均値を観察してください。若干異なる結果になるかもしれません。また、このクエリを複数回実行することで、より実質的な結果を得ることができます。
 
-    ![Screenshot showing average aggregation](../images/dp-300-module-06-lab-09.png)
+    ![平均の集計を示すスクリーンショット](../images/dp-300-module-06-lab-09.png)
 
-## Identify high CPU queries
+## 高いCPUのクエリを特定する
 
-1. Locate the **Query Performance Insight** icon on the **Intelligent Performance** section of the blade for the **AdventureWorksLT** database.
+1. AdventureWorksLT** データベースのブレードの **インテリジェント パフォーマンス** セクションにある **Query Performance Insight** アイコンを探します。
 
-    ![Screenshot showing the Query Performance Insight icon](../images/dp-300-module-06-lab-10.png)
+    ![クエリパフォーマンスインサイトアイコンを示すスクリーンショット](../images/dp-300-module-06-lab-10.png)
 
-1. Select **Reset settings**.
+1. **設定のリセット**を選択します。
 
-    ![Screenshot showing the Reset settings option](../images/dp-300-module-06-lab-11.png)
+1. グラフの下のグリッドにあるクエリをクリックします。クエリが表示されない場合は、2分ほど待って**更新**を選択します。
 
-1. Click on the query in the grid below the graph. If you do not see a query, wait for 2 minutes and select **Refresh**.
+    **注意:** 期間とクエリIDが異なる場合があります。複数のクエリが表示された場合は、それぞれのクエリをクリックして結果を観察してください。
 
-    **Note:** You may have different duration and query ID. If you see more than one query, click on each one to observe the results.
+    ![平均集計の画面](../images/dp-300-module-06-lab-12.png)
 
-    ![Screenshot showing average aggregation](../images/dp-300-module-06-lab-12.png)
+このクエリでは、合計時間が1分以上、実行回数が約10,000回であることが確認できます。
 
-For this query, you can see that the total duration was over a minute and that it ran approximately 10,000 times.
-
-In this exercise, you've learned how to explore server resources for an Azure SQL Database and identify potential query performance issues through Query Performance Insight.
+この演習では、Azure SQL Database のサーバー リソースを調査し、Query Performance Insight を使用して潜在的なクエリ パフォーマンスの問題を特定する方法を学びました。
