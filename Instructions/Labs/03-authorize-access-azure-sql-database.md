@@ -18,8 +18,6 @@ lab:
 
 1. ラボの仮想マシンから、ブラウザー セッションを開始し、[https://portal.azure.com](https://portal.azure.com/) にナビゲートします。このラボ仮想マシンの **Resources** タブで提供される Azure **Username** と **Password** を使用して、ポータルに接続します。
 
-    ![Picture 1](../images/dp-300-module-01-lab-01.png)
-
 1. Azure ポータルのホーム ページで、**すべてのリソース** を選択します。
 
     ![Azure ポータルのホーム ページで、すべてのリソースを選択した画面](../images/dp-300-module-03-lab-01.png)
@@ -36,7 +34,7 @@ lab:
 
 1. **保存** を選択し、処理を完了します。これで、以下のようにユーザー名がサーバーのAzure Active Directory管理者になります。
 
-    Active Directory 管理者ページのスクリーンショット](../images/dp-300-module-03-lab-04.png)
+    ![Active Directory 管理者ページのスクリーンショット](../images/dp-300-module-03-lab-04.png)
 
 1. 左側の**概要**を選択し、**サーバー名**をコピーします。
 
