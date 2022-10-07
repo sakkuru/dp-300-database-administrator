@@ -89,7 +89,7 @@ lab:
 
 ## 高いCPUのクエリを特定する
 
-1. AdventureWorksLT** データベースのブレードの **インテリジェント パフォーマンス** セクションにある **Query Performance Insight** アイコンを探します。
+1. **AdventureWorksLT** データベースのブレードの **インテリジェント パフォーマンス** セクションにある **Query Performance Insight** アイコンを探します。
 
     ![クエリパフォーマンスインサイトアイコンを示すスクリーンショット](../images/dp-300-module-06-lab-10.png)
 
