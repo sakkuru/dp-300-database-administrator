@@ -1,69 +1,67 @@
 ---
 lab:
-    title: 'Lab 5 – Enable Microsoft Defender for SQL and Data classification'
-    module: 'Implement a Secure Environment for a Database Service'
+    title: 'Lab 5 – SQL とデータの分類のために Microsoft Defender を有効にする'
+    module: 'データベースサービスのための安全な環境の実装'
 ---
 
-# Enable Microsoft Defender for SQL and Data Classification
+# SQL とデータ分類のために Microsoft Defender を有効にする
 
-**Estimated Time: 20 minutes**
+**推定時間: 20 分**
 
-The students will take the information gained in the lessons to configure and subsequently implement security in the Azure Portal and within the AdventureWorks database.
+受講者は、レッスンで得た情報をもとに、AzureポータルおよびAdventureWorksデータベース内のセキュリティを設定し、その後実装します。
 
-You have been hired as a Senior Database Administrator help ensure the security of the database environment. These tasks will focus on Azure SQL Database.
+あなたは、データベース環境のセキュリティを確保するためのシニアデータベース管理者として採用されました。これらのタスクは、Azure SQL Databaseに焦点を当てます。
 
-## Enable Microsoft Defender for SQL
+## Microsoft Defender for SQL を有効にする
 
-1. From the lab virtual machine, start a browser session and navigate to [https://portal.azure.com](https://portal.azure.com/). Connect to the Portal using the Azure **Username** and **Password** provided on the **Resources** tab for this lab virtual machine.
+1. ラボの仮想マシンから、ブラウザ セッションを開始し、[https://portal.azure.com](https://portal.azure.com/) に移動します。このラボ仮想マシンの **Resources** タブで提供された Azure **Username** と **Password** を使用して、ポータルに接続します。
 
-    ![Picture 1](../images/dp-300-module-01-lab-01.png)
+1. Azure ポータルから、上部の検索ボックスで「SQL サーバー」を検索し、オプションの一覧から **SQL サーバー** をクリックします。
 
-1. From the Azure Portal, search for “SQL servers” in the search box at the top, then click **SQL servers** from the list of options.
+    ![ソーシャルメディアへの投稿画面 説明が自動生成される](../images/dp-300-module-04-lab-1.png)
 
-    ![A screenshot of a social media post Description automatically generated](../images/dp-300-module-04-lab-1.png)
+1. サーバー名 **dp300-lab-XXXXXXXX** を選択して、詳細ページを表示します（SQLサーバーには別のリソースグループと場所が割り当てられている場合があります）。
 
-1. Select the server name **dp300-lab-XXXXXXXX** to be taken to the detail page (you may have a different resource group and location assigned for your SQL server).
+    ![ソーシャルメディアへの投稿画面 自動生成された説明文](../images/dp-300-module-04-lab-2.png)
 
-    ![A screenshot of a social media post Description automatically generated](../images/dp-300-module-04-lab-2.png)
+1. Azure SQLサーバーのメインブレードから、**セキュリティ**セクションに移動し、**Microsoft Defender for Cloud**を選択します。
 
-1. From the main blade of your Azure SQL server, navigate to the **Security** section, and select **Microsoft Defender for Cloud**.
+   ![ Microsoft Defender for Cloud オプションを選択した画面](../images/dp-300-module-05-lab-01.png)
 
-    ![Screenshot of selecting the Microsoft Defender for Cloud option](../images/dp-300-module-05-lab-01.png)
+    **Microsoft Defender for Cloud**ページで、**Enable Microsoft Defender for SQL**を選択します。
 
-    On the **Microsoft Defender for Cloud** page, select **Enable Microsoft Defender for SQL**.
+1. Azure Defender for SQL が正常に有効化されると、以下の通知メッセージが表示されます。
 
-1. The following notification message will show up after Azure Defender for SQL is successfully enabled.
+    ![構成オプションを選択した画面](../images/dp-300-module-05-lab-02_1.png)
 
-    ![Screenshot of selecting the Configure option](../images/dp-300-module-05-lab-02_1.png)
+1. **Microsoft Defender for Cloud** ページで、**構成** リンクを選択します (このオプションを表示するには、ページを更新する必要がある場合があります)。
 
-1. On the **Microsoft Defender for Cloud** page, select the **Configure** link (You may need to refresh the page to see this option)
+    ![設定オプションを選択した画面](../images/dp-300-module-05-lab-02.png)
 
-    ![Screenshot of selecting the Configure option](../images/dp-300-module-05-lab-02.png)
+1. **サーバー設定** ページで、**MICROSOFT DEFENDER FOR SQL** のトグルスイッチが **ON** に設定され、**ストレージ アカウント** 名が提供されていることに注目してください。**スキャンレポートの送信先**に、Azureポータルにログインする際に使用したAzureアカウントのメールアドレスを入力し、**保存**を選択します。
 
-1. On the **Server settings** page, notice that toggle switch under **MICROSOFT DEFENDER FOR SQL** is set to **ON**, and that the **Storage account** name is provided. Enter the Azure account email you used to log into Azure portal in the **Send scan reports to** field, and then select **Save**.
+    ![サーバー設定画面のスクリーンショット](../images/dp-300-module-05-lab-03.png)
 
-    ![Screenshot of Server settings page](../images/dp-300-module-05-lab-03.png)
+## データ分類を有効にする
 
-## Enable Data Classification
+1. Azure SQLサーバーのメインブレードから、**設定**セクションに移動し、**SQLデータベース**を選択し、データベース名を選択します。
 
-1. From the main blade of your Azure SQL server, navigate to the **Settings** section, and select **SQL databases**, and then select the database name.
+    ![AdobeWOrksLTデータベースを選択した画面](../images/dp-300-module-05-lab-04.png)
 
-    ![Screenshot showing selecting the AdventureWOrksLT database](../images/dp-300-module-05-lab-04.png)
+1. **AdventureWorksLT**データベースのメインブレードで、**セキュリティ**セクションに移動し、**データの検出と分類**を選択します。
 
-1. On the main blade for the **AdventureWorksLT** database, navigate to the **Security** section, and then select **Data Discovery & Classification**.
+    ![データ検索と分類を表示する画面](../images/dp-300-module-05-lab-05.png)
 
-    ![Screenshot showing the Data Discovery & Classification](../images/dp-300-module-05-lab-05.png)
+1. **データの検出と分類** ページで、次のような情報メッセージが表示されます。**現在、SQL 情報保護ポリシーを使用しています。分類が推奨される15個の列が見つかりました**。このリンクを選択します。
 
-1. On the **Data Discovery & Classification** page, you will see an informational message that reads: **Currently using SQL Information Protection policy. We have found 15 columns with classification recommendations**. Select this link.
+    ![分類の推奨を示すスクリーンショット](../images/dp-300-module-05-lab-06.png)
 
-    ![Screenshot showing the Classification Recommendations](../images/dp-300-module-05-lab-06.png)
+1. 次の **データの検出と分類** 画面で **すべて選択** にチェックを入れ、 **選択した推奨事項を受け入れます** を選択し、 **保存** を選択して分類をデータベースに保存します。
 
-1. On the next **Data Discovery & Classification** screen select the check box next to **Select all**, select **Accepted selected recommendations**, and then select **Save** to save the classifications into the database.
+    ![選択されたレコメンデーションを受け入れる画面](../images/dp-300-module-05-lab-07.png)をご覧ください。
 
-    ![Screenshot showing the Accept selected recommendations](../images/dp-300-module-05-lab-07.png)
+1. **データの検出と分類** 画面に戻り、5つのテーブルで15個の列が正常に分類されたことに気がつきます。
 
-1. Back to the **Data Discovery & Classification** screen, notice that fifteen columns were successfully classified across five different tables.
+    ![この画面は、「Accept selected recommendations」の画面です](../images/dp-300-module-05-lab-08.png)
 
-    ![Screenshot showing the Accept selected recommendations](../images/dp-300-module-05-lab-08.png)
-
-In this exercise, you've enhanced the security of an Azure SQL Database by enabling Microsoft Defender for SQL. You've also created classified columns based on Azure portal recommendations.
+この演習では、Microsoft Defender for SQLを有効にして、Azure SQL Databaseのセキュリティを強化しました。また、Azure ポータルの推奨事項に基づいて分類されたカラムを作成しました。
