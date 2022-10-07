@@ -18,8 +18,6 @@ lab:
 
 1. ラボ仮想マシンから、ブラウザー セッションを開始し、[https://portal.azure.com](https://portal.azure.com/) にナビゲートします。このラボ仮想マシンの **Resources** タブで提供される Azure **Username** と **Password** を使用して、ポータルに接続します。
 
-    ![Picture 1](../images/dp-300-module-01-lab-01.png)
-
 1. Azure ポータルから、上部の検索ボックスで「SQL Server」を検索し、オプションの一覧から **SQL Server** をクリックします。
 
     ![ソーシャルメディアへの投稿画面 説明が自動生成される](../images/dp-300-module-04-lab-1.png)
@@ -34,7 +32,7 @@ lab:
 
 1. **ネットワーク設定を表示する**を選択します。
 
-    ![写真2](../images/dp-300-module-04-lab-4.png)を選択します。
+    ![写真2](../images/dp-300-module-04-lab-4.png)
 
 1. **ネットワーク**ページで、**+ クライアントIPv4アドレスの追加**をクリックし、**保存**をクリックします。
 
@@ -59,7 +57,7 @@ lab:
 
 1. データ層アプリケーションのインポート**ダイアログで、最初の画面で **Next** をクリックします。
 
-1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorksLT.bacpac** にある .bacpac ファイルを、ラボ VM 上の **C:\LabFilesSecure Environment** パスにダウンロードします（存在しない場合はフォルダー構造を作成します）。
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorksLT.bacpac** にある .bacpac ファイルを、ラボ VM 上の **C:\LabFiles\Secure Environment** パスにダウンロードします（存在しない場合はフォルダー構造を作成します）。
 
 1. 1. **Import Settings** 画面で **Browse** をクリックして **C:\LabFilesSecure Environment** フォルダに移動し、 **AdventureWorksLT.bacpac** ファイルをクリックし、**Open** をクリックしてください。**Import Data-tier Application** の画面に戻り、**Next**をクリックします。
 
@@ -78,7 +76,7 @@ lab:
 
 1. **Summary** 画面で、**Finish**をクリックします。インポートが完了すると、以下のような結果が表示されます。その後、**Close**をクリックします。
 
-    ![携帯電話の画面説明の自動生成](../images/dp-300-module-04-lab-11.png)をクリックします。
+    ![携帯電話の画面説明の自動生成](../images/dp-300-module-04-lab-11.png)
 
 1. SQL Server Management Studioに戻り、**Object Explorer**で**Databases**フォルダを展開します。次に、**AdventureWorksFromBacpac**データベースを右クリックし、**New Query**を選択します。
 
@@ -113,8 +111,8 @@ lab:
 
 1. 前のステップで作成した認証情報を使って接続を試みます。以下の情報を使用する必要があります。
 
-    - ログイン:** ContainedDemo
-    - パスワード:** P@ssw0rd01
+    - **ログイン:** ContainedDemo
+    - **パスワード:** P@ssw0rd01
 
      **Connect** をクリックします。
 
@@ -122,11 +120,11 @@ lab:
 
     ![携帯電話の説明のスクリーンショットが自動生成されました](../images/dp-300-module-04-lab-15.png)
 
-    **注：** このエラーは、接続が、ユーザーが作成された**AdventureWorksFromBacpac**ではなく、**master*データベースにログインしようとしたために発生します。OK**をクリックしてエラーメッセージを終了し、次に示すように**Connect to Server**ダイアログボックスで**Options >>*をクリックして、接続コンテキストを変更します。
+    **注：** このエラーは、接続が、ユーザーが作成された**AdventureWorksFromBacpac**ではなく、**master*データベースにログインしようとしたために発生します。OK**をクリックしてエラーメッセージを終了し、次に示すように **Connect to Server** ダイアログボックスで **Options >>** をクリックして、接続コンテキストを変更します。
 
     ![Picture 9](../images/dp-300-module-04-lab-16.png)
 
-1. **接続のプロパティ** タブで、データベース名 **AdventureWorksFromBacpac** を入力し、[接続]をクリックします**。
+1. **接続のプロパティ** タブで、データベース名 **AdventureWorksFromBacpac** を入力し、 **接続** をクリックします。
 
     ソーシャルメディアへの投稿のスクリーンショット 自動生成された説明](../images/dp-300-module-04-lab-17.png)
 
