@@ -1,47 +1,47 @@
 ---
 lab:
-    title: 'Setup your own environment'
-    module: 'Setup your own environment'
+    title: '自分自身の環境を構築する'
+    モジュールを作成します。'自分の環境をセットアップする'
 ---
 
-# Setup local lab environment
+# ローカルなラボ環境のセットアップ
 
-Ideally, you should complete these labs in a hosted lab environment. If you want to complete them on your own computer, you can do so by installing the following software. You may experience unexpected dialogs and behavior when using your own environment. Due to the wide range of possible local configurations, the course team cannot support issues you may encounter in your own environment.
+理想的には、ホストされたラボ環境でこれらのラボを完了する必要があります。自分のコンピューターで完了したい場合は、次のソフトウェアをインストールすることで完了できます。自分の環境を使用する場合、予期しないダイアログや動作が発生する可能性があります。ローカルでの設定は多岐にわたるため、コースチームではご自身の環境で発生しうる問題をサポートすることはできません。
 
-## Windows Installation
+## Windows インストール
 
-> &#128221; The instructions below are for a Windows 10 computer. You can also use Linux or MacOS. You may need to adapt the lab instructions for your chosen OS.
+> &#128221; 以下の手順は、Windows 10のコンピュータを使用した場合です。LinuxやMacOSを使用することもできます。ラボの手順を選択したOSに合わせる必要がある場合があります。
 
 ### Windows 10 (OS)
 
-1. Install Windows 10 (*version 2004 or later*).
+1. Windows 10 (OS) 1. Windows 10 (*バージョン 2004 以降*) をインストールします。
 
-1. Apply all available updates.
+1. 利用可能なすべての更新プログラムを適用します。
 
-### Edge
+### エッジ
 
-1. Install the latest version of Microsoft Edge from [microsoft.com/edge].
+1. Microsoft Edgeの最新版を[https://microsoft.com/edge] からインストールします。
 
 ### Git
 
-1. Download and install from [git-scm.com/downloads].
+1. [https://git-scm.com/downloads] からダウンロードし、インストールします。
 
-    - Use the default options in the installer.
+    - インストーラーのデフォルトのオプションを使用します。
 
-### Visual Studio Code
+### Visual Studio コード
 
-1. Download and install from [code.visualstudio.com/download].
+1. [https://code.visualstudio.com/download] からダウンロードし、インストールします。
 
-    - Use the default options in the installer.
+    - インストーラーのデフォルトオプションを使用します。
 
 ### SQL Server Management Studio
 
-1. Download and install from [https://aka.ms/ssmsfullsetup].
+1. [https://aka.ms/ssmsfullsetup] からダウンロードし、インストールします。
 
-    - Use the default options in the installer.
+    - インストーラーのデフォルトオプションを使用します。
 
 ### Azure Data Studio
 
-1. Download and install from [https://docs.microsoft.com/sql/azure-data-studio/download-azure-data-studio].
+1. [https://docs.microsoft.com/sql/azure-data-studio/download-azure-data-studio] からダウンロードし、インストールする。
 
-    - Use the default options in the installer.
+    - インストーラーのデフォルトオプションを使用します。
