@@ -1,34 +1,32 @@
 ---
 lab:
-    title: 'Lab 15 – Backup to URL and Restore from URL'
-    module: 'Plan and implement a high availability and disaster recovery solution'
+    title: 'Lab 15 – URLへのバックアップとURLからのリストア'
+    module: '高可用性およびディザスタ リカバリ ソリューションを計画および実装する'
 ---
 
-# Backup to URL
+# URL へのバックアップ
 
-**Estimated Time: 30 minutes**
+**見積もり時間: 30分**
 
-As a DBA for AdventureWorks, you need to back up a database to a URL in Azure and restore it from Azure blob storage after a human error has occurred.
+AdventureWorksのDBAとして、データベースをAzureのURLにバックアップし、ヒューマンエラーが発生した後にAzure blobストレージからリストアする必要があります。
 
-## Restore a database
+## データベースの復元
 
-1. Download the database backup file located on **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorks2017.bak** to **C:\LabFiles\HADR** path on the lab virtual machine (create the folder structure if it does not exist).
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorks2017.bak** にあるデータベースのバックアップファイルを、ラボ仮想マシンの **C:\LabFiles\HADR** パスにダウンロードします（フォルダ構造が存在しない場合は作成します）。
 
     ![Picture 03](../images/dp-300-module-15-lab-00.png)
 
-1. Select the Windows Start button and type SSMS. Select **Microsoft SQL Server Management Studio 18** from the list.  
+1. Windowsのスタートボタンを選択し、SSMSと入力します。リストから **Microsoft SQL Server Management Studio 18** を選択します。 
 
-    ![Picture 01](../images/dp-300-module-01-lab-34.png)
-
-1. When SSMS opens, notice that the **Connect to Server** dialog will be pre-populated with the default instance name. Select **Connect**.
+1. SSMSが開くと、**Connect to Server** ダイアログにデフォルトのインスタンス名が事前に入力されていることに注意してください。**Connect**を選択します。
 
     ![Picture 02](../images/dp-300-module-07-lab-01.png)
 
-1. Select the **Databases** folder, and then **New Query**.
+1. Databases** フォルダを選択し、**New Query** を選択します。
 
     ![Picture 03](../images/dp-300-module-07-lab-04.png)
 
-1. In the new query window, copy and paste the below T-SQL into it. Execute the query to restore the database.
+1. 新しいクエリウィンドウで、以下のT-SQLをコピーして貼り付けます。データベースを復元するためにクエリを実行する。
 
     ```sql
     RESTORE DATABASE AdventureWorks2017
@@ -40,104 +38,102 @@ As a DBA for AdventureWorks, you need to back up a database to a URL in Azure an
             TO 'C:\LabFiles\HADR\AdventureWorks2017_log.ldf';
     ```
 
-    **Note:** The database backup file name and path should match with what you've downloaded on step 1, otherwise the command will fail.
+    **注意：** データベースのバックアップファイルの名前とパスは、ステップ1でダウンロードしたものと一致させないと、コマンドは失敗します。
 
-1. You should see a successful message after the restore is complete.
+1. リストア完了後、成功のメッセージが表示されるはずです。
 
     ![Picture 03](../images/dp-300-module-07-lab-05.png)
 
-## Configure Backup to URL
+## URLへのバックアップの設定
 
-1. From the lab virtual machine, start a browser session and navigate to [https://portal.azure.com](https://portal.azure.com/). Connect to the Portal using the Azure **Username** and **Password** provided on the **Resources** tab for this lab virtual machine.
+1. ラボ仮想マシンから、ブラウザセッションを開始し、[https://portal.azure.com](https://portal.azure.com/) に移動します。このラボ仮想マシンの **Resources** タブで提供された Azure **Username** と **Password** を使用して、ポータルに接続します。
 
-    ![Screenshot of Azure portal sign in page](../images/dp-300-module-01-lab-01.png)
+1. 以下のアイコンを選択し、**クラウドシェル** プロンプトを開きます。
 
-1. Open a **Cloud Shell** prompt by selecting the icon shown below.
+    ![Azureポータル上のクラウドシェルアイコンの画面](../images/dp-300-module-15-lab-01.png)
 
-    ![Screenshot of cloud shell icon on Azure portal.](../images/dp-300-module-15-lab-01.png)
+1. ポータルの下半分に、Azure Cloud Shellを利用することを歓迎するメッセージが表示されることがありますが、まだCloud Shellを利用していない場合は、このメッセージをクリックします。Bash**を選択します。
 
-1. At the bottom half of the portal, you may see a message welcoming you to the Azure Cloud Shell, if you have not yet used a Cloud Shell. Select **Bash**.
+    ![Azureポータルのクラウドシェルのウェルカムページの画面](../images/dp-300-module-15-lab-02.png)
 
-    ![Screenshot of welcome page for cloud shell on Azure portal.](../images/dp-300-module-15-lab-02.png)
+1. クラウドシェルを使用したことがない場合は、ストレージの設定を行う必要があります。 **詳細設定の表示** を選択します（別のサブスクリプションが割り当てられている場合があります）。
 
-1. If you have not previously used a Cloud Shell, you must configure a storage. Select **Show advanced settings** (You may have a different subscription assigned).
+    ![Azureポータルでクラウドシェル用のストレージを作成する画面](../images/dp-300-module-15-lab-03.png)
 
-    ![Screenshot of create storage for cloud shell on Azure portal.](../images/dp-300-module-15-lab-03.png)
+1. 既存の **リソースグループ** を使用し、以下のダイアログに示すように、**ストレージアカウント** と **ファイル共有** に新しい名前を指定します。リソースグループ**の名前をメモしておいてください。これは *contoso-rg* で始まっている必要があります。次に、**Create storage**を選択します。
 
-1. Use the existing **Resource group** and specify new names for **Storage account** and **File share**, as shown in the dialog below. Make a note of the **Resource group** name. It should start with *contoso-rg*. Then select **Create storage**.
+    **注意：** ストレージアカウント名は一意でなければならず、すべて小文字で特殊文字は使用しないでください。ユニークな名前を付けてください。
 
-    **Note:** Your storage account name must be unique and all lower case with no special characters. Please provide a unique name.
+    ![Azureポータルでのストレージアカウントとファイル共有の作成画面](../images/dp-300-module-15-lab-04.png)
 
-    ![Screenshot of the create storage account and file share on Azure portal.](../images/dp-300-module-15-lab-04.png)
+1. 完了すると、以下のようなプロンプトが表示されます。Cloud Shellの画面左上に**Bash**と表示されていることを確認します。
 
-1. Once complete, you will see a prompt similar to the one below. Verify that the upper left corner of the Cloud Shell screen shows **Bash**.
+    ![AzureポータルのCloud Shellプロンプトの画面](../images/dp-300-module-15-lab-05.png)
 
-    ![Screenshot of the Cloud Shell prompt on Azure portal.](../images/dp-300-module-15-lab-05.png)
+1. CLIからCloud Shellで以下のコマンドを実行し、新しいストレージアカウントを作成します。リソースグループ名は、上記でメモした **contoso-rg** で始まるものを使用します。
 
-1. Create a new storage account from the CLI using by executing the following command in Cloud Shell. Use the name of the resource group starting with **contoso-rg** that you made note of above.
-
-    > [!NOTE]
-    > Change the resource group name (**-g** parameter), and provide a unique storage account name (**-n** parameter).
+    > 注意
+    > リソースグループ名(**-g**パラメータ)を変更し、一意のストレージアカウント名(**-n**パラメータ)を指定します。
 
     ```bash
     az storage account create -n "dp300backupstorage1234" -g "contoso-rglod23149951" --kind StorageV2 -l eastus2
     ```
 
-    ![Screenshot of the storage account creation prompt on Azure portal.](../images/dp-300-module-15-lab-16.png)
+    ![Azureポータルでのストレージアカウント作成画面](../images/dp-300-module-15-lab-16.png)
 
-1. Next you will get the keys for your storage account, which you will use in subsequent steps. Execute the following code in Cloud Shell using the unique name of your storage account and resource group.
+1. 次に、この後の手順で使用するストレージアカウントのキーを取得します。ストレージアカウントとリソースグループの一意名を使って、Cloud Shellで以下のコードを実行します。
 
     ```bash
     az storage account keys list -g contoso-rglod23149951 -n dp300backupstorage1234
     ```
 
-    Your account key will be in the results of the above command. Make sure you use the same name (after the **-n**) and resource group (after the **-g**) that you used in the previous command. Copy the returned value for **key1** (without the double quotes) as shown here:
+    上記のコマンドの結果に、あなたのアカウントキーが表示されます。前のコマンドで使用したのと同じ名前(**-n**の後)とリソースグループ(**-g**の後)を使用していることを確認してください。以下のように、**key1**の戻り値をコピーします（二重引用符は付けないでください）。
 
-    ![Screenshot of the storage account key on Azure portal.](../images/dp-300-module-15-lab-06.png)
+    ![Azure ポータル上のストレージ アカウント キーのスクリーンショット](../images/dp-300-mod)
 
-1. Backing up a database in SQL Server to a URL uses container within a storage account. You will create a container specifically for backup storage in this step. To do this, execute the commands below.
+1. SQL Server のデータベースを URL にバックアップするには、ストレージアカウント内のコンテナを使用します。このステップでは、バックアップストレージ専用のコンテナを作成します。そのために、以下のコマンドを実行します。
 
     ```bash
     az storage container create --name "backups" --account-name "dp300backupstorage1234" --account-key "storage_key" --fail-on-exist
     ```
 
-    Where **dp300backupstorage1234** is the unique storage account name used when creating the storage account, and **storage_key** is the key generated above. The output should return **true**.
+    ここで、**dp300backupstorage1234** はストレージアカウントを作成する際に使用した一意のストレージアカウント名で、**storage_key** は上記で生成されたキーになります。出力は **true** を返すはずです。
 
-    ![Screenshot of the output for the container creation.](../images/dp-300-module-15-lab-07.png)
+    ![コンテナ作成時の出力画面](../images/dp-300-module-15-lab-07.png)
 
-1. To verify if the container backups has been created properly, execute:
+1. コンテナのバックアップが正しく作成されたかどうかを確認するために、以下を実行します。
 
     ```bash
     az storage container list --account-name "dp300backupstorage1234" --account-key "storage_key"
     ```
 
-    Where **dp300backupstorage1234** is the unique storage account name used when creating the storage account, and **storage_key** is the key generated. The output should return something similar to below:
+    ここで、**dp300backupstorage1234** はストレージアカウントを作成する際に使用した一意のストレージアカウント名で、**storage_key** は生成されたキーです。出力は以下のようなものを返すはずです。
 
-    ![Screenshot of the container list.](../images/dp-300-module-15-lab-08.png)
+    ![コンテナ一覧のスクリーンショット](../images/dp-300-module-15-lab-08.png)
 
-1. A shared access signature (SAS) at the container level is required for security. This can be done via Cloud Shell or PowerShell. Execute the following:
+1. セキュリティのために、コンテナレベルでの共有アクセス署名(SAS)が必要です。これは、Cloud ShellまたはPowerShellで実行することができます。以下を実行します。
 
     ```bash
     az storage container generate-sas -n "backups" --account-name "dp300backupstorage1234" --account-key "storage_key" --permissions "rwdl" --expiry "date_in_the_future" -o tsv
     ```
 
-    Where **dp300backupstorage1234** is the unique storage account name used when creating the storage account, **storage_key** is the key generated, and **date_in_the_future** is a time later than now. **date_in_the_future** must be in UTC. An example is **2021-12-31T00:00Z** which translates to expiring at Dec 31, 2020 at midnight.
+    ここで、**dp300backupstorage1234** はストレージアカウント作成時に使用した一意のストレージアカウント名、**storage_key** は生成したキー、**date_in_the_future** は今より後の時間です。**date_in_the_future**はUTCである必要があります。例えば、**2021-12-31T00:00Z**は、2020年12月31日午前0時に期限切れとなることを意味します。
 
-    The output should return something similar to below. Copy the whole shared access signature and paste it in **Notepad**, it will be used in the next task.
+    以下のような出力が得られるはずです。共有アクセス署名全体をコピーして、**メモ帳**に貼り付けてください。
 
-    ![Screenshot of the shared access signature key.](../images/dp-300-module-15-lab-09.png)
+    ![共有アクセス署名のスクリーンショット](../images/dp-300-module-15-lab-09.png)
 
-## Create credential
+## クレデンシャルの作成
 
-Now that the functionality is configured, you can generate a backup file as a blob in Azure Storage Account.
+これで機能が設定されたので、Azure Storage Account に blob としてバックアップファイルを生成することができます。
 
-1. Start **SQL Server Management Studio (SSMS)**.
+1. **SQL Server Management Studio (SSMS)** を起動します。
 
-1. You will be prompted to connect to  SQL Server. Ensure that **Windows Authentication** is selected, and select **Connect**.
+1. SQL Server への接続を求めるプロンプトが表示されます。**Windows 認証** が選択されていることを確認し、**接続** を選択します。
 
-1. Select **New Query**.
+1. **New Query**を選択します。
 
-1. Create the credential that will be used to access storage in the cloud with the following Transact-SQL. Fill in the appropriate values, then select **Execute**.
+1. 以下のTransact-SQLを使用して、クラウド上のストレージにアクセスするために使用されるクレデンシャルを作成します。適切な値を入力し、**Execute**を選択します。
 
     ```sql
     IF NOT EXISTS  
@@ -152,24 +148,24 @@ Now that the functionality is configured, you can generate a backup file as a bl
     GO  
     ```
 
-    Where both occurrences of **<storage_account_name>** are the unique storage account name created, and **<key_value>** is the value generated at the end of the previous task in this format:
+    ここで、**<storage_account_name>** の両方の出現は、作成されたユニークなストレージアカウント名で、**<key_value>** はこのフォーマットで前のタスクの最後に生成された値です。
 
     `'se=2020-12-31T00%3A00Z&sp=rwdl&sv=2018-11-09&sr=csig=rnoGlveGql7ILhziyKYUPBq5ltGc/pzqOCNX5rrLdRQ%3D'`
 
-1. You can check if the credential was created successfully by navigating to **Security -> Credentials** on Object Explore.
+1. クレデンシャルが正常に作成されたかどうかは、Object Explore の **Security -> Credentials** に移動することで確認できます。
 
-    ![Screenshot of the credential on SSMS.](../images/dp-300-module-15-lab-17.png)
+    ![SSMS上のクレデンシャルのスクリーンショット](../images/dp-300-module-15-lab-17.png)
 
-1. If you mistyped and need to recreate the credential, you can drop it with the following command, making sure to change the name of the storage account:
+1. もし、入力ミスがあり、クレデンシャルを再作成する必要がある場合は、以下のコマンドでドロップすることができます。
 
     ```sql
     -- Only run this command if you need to go back and recreate the credential! 
     DROP CREDENTIAL [https://<storage_account_name>.blob.core.windows.net/backups]  
     ```
 
-## Backup to URL
+## バックアップ先URL
 
-1. Back up the database **AdventureWorks2017** to Azure with the following command in Transact-SQL:
+1. データベース **AdventureWorks2017** を Transact-SQL で以下のコマンドを使用して Azure にバックアップします。
 
     ```sql
     BACKUP DATABASE AdventureWorks2017   
@@ -177,59 +173,59 @@ Now that the functionality is configured, you can generate a backup file as a bl
     GO 
     ```
 
-    Where **<storage_account_name>** is the unique storage account name used created. The output should return something similar to below.
+    ここで、**<storage_account_name>** は、作成された一意のストレージアカウント名です。出力は以下のようなものが返ってくるはずです。
 
-    ![Screenshot of the backup error.](../images/dp-300-module-15-lab-18.png)
+    ![バックアップエラーのスクリーンショット](../images/dp-300-module-15-lab-18.png)
 
-    If something was configured incorrectly, you will see an error message similar to the following:
+    設定に誤りがあった場合、以下のようなエラーメッセージが表示されます。
 
-    ![Screenshot of the backup error.](../images/dp-300-module-15-lab-10.png)
+    ![バックアップエラーの画面](../images/dp-300-module-15-lab-10.png)
 
-    If an error occurs, check that you did not mistype anything during the credential creation, and that everything was created successfully.
+    エラーが発生した場合は、クレデンシャル作成時に入力ミスがなかったか、すべてが正常に作成されたかを確認します。
 
-## Validate the backup through Azure CLI
+## Azure CLI を使ってバックアップを検証する
 
-To see that the file is actually in Azure, you can use Storage Explorer (preview) or Azure Cloud Shell.
+ファイルが実際にAzureにあることを確認するために、Storage Explorer（プレビュー）またはAzure Cloud Shellを使用することができます。
 
-1. Start a browser session and navigate to [https://portal.azure.com](https://portal.azure.com/). Connect to the Portal using the Azure **Username** and **Password** provided on the **Resources** tab for this lab virtual machine.
+1. ブラウザセッションを開始し、[https://portal.azure.com](https://portal.azure.com/)に移動する。このラボの仮想マシンの **Resources** タブで提供された Azure **Username** と **Password** を使用して、ポータルに接続します。
 
-1. Use the Azure Cloud Shell to run this Azure CLI command:
+1. Azure Cloud Shell を使用して、次の Azure CLI コマンドを実行します。
 
     ```bash
     az storage blob list -c "backups" --account-name "dp300backupstorage1234" --account-key "storage_key" --output table
     ```
 
-    Make sure you use the same unique storage account name (after the **--account-name**) and account key (after the **--account-key**) that you used in the previous commands.
+    ストレージアカウント名（**--account-name**の後）とアカウントキー（**--account-key**の後）は、前のコマンドで使用したものと同じ一意のものを使用していることを確認してください。
 
-    ![Screenshot of the backup in the container.](../images/dp-300-module-15-lab-19.png)
+    ![コンテナ内のバックアップの画面](../images/dp-300-module-15-lab-19.png)
 
-    We can confirm the backup file was generated successfully.
+    バックアップファイルが正常に生成されたことが確認できます。
 
-## Validate the backup through Storage Explorer
+## ストレージエクスプローラーでバックアップを確認します。
 
-1. To use the Storage Explorer (preview), from the home page in the Azure portal select **Storage accounts**.
+1. ストレージエクスプローラー（プレビュー）を使用するには、Azure ポータルのホーム ページから **ストレージアカウント** を選択します。
 
-    ![Screenshot showing selecting a storage account.](../images/dp-300-module-15-lab-11.png)
+    ![ストレージアカウントを選択する画面](../images/dp-300-module-15-lab-11.png)
 
-1. Select the unique storage account name you created for the backups.
+1. バックアップ用に作成した固有のストレージアカウント名を選択します。
 
-1. In the left navigation, select **Storage browser (preview)**. Expand **Blob containers**.
+1. 左側のナビゲーションで、**Storage browser (preview)** を選択します。ブロブコンテナ**を展開します。
 
-    ![Screenshot showing the backed up file in the storage account.](../images/dp-300-module-15-lab-12.png)
+    ![ストレージアカウントにバックアップされたファイルを表示するスクリーンショット](../images/dp-300-module-15-lab-12.png)
 
-1. Select **backups**.
+1. バックアップ**を選択します。
 
-    ![Screenshot showing the backed up file in the storage account.](../images/dp-300-module-15-lab-13.png)
+    ![ストレージアカウントにバックアップされたファイルが表示されます](../images/dp-300-module-15-lab-13.png)
 
-1. Note that the backup file is stored in the container.
+1. バックアップファイルはコンテナ内に保存されていることに注意してください。
 
-    ![Screenshot showing the backup file on storage browser.](../images/dp-300-module-15-lab-14.png)
+    ![ストレージブラウザ上のバックアップファイルを表示した画面](../images/dp-300-module-15-lab-14.png)
 
-## Restore from URL
+## URLからリストアする
 
-This task will show you how to restore a database from an Azure blob storage.
+このタスクでは、Azure blob ストレージからデータベースを復元する方法を説明します。
 
-1. From **SQL Server Management Studio (SSMS)**, select **New Query**, then paste and execute the following query.
+1. **SQL Server Management Studio (SSMS)** から、**New Query** を選択し、以下のクエリーを貼り付けて実行します。
 
     ```sql
     USE AdventureWorks2017;
@@ -238,9 +234,9 @@ This task will show you how to restore a database from an Azure blob storage.
     GO
     ```
 
-    ![Screenshot showing the customer name before the update was executed.](../images/dp-300-module-15-lab-21.png)
+    ![更新実行前の顧客名を表示した画面](../images/dp-300-module-15-lab-21.png)
 
-1. Run this command to change the name of that customer.
+1. その顧客の名前を変更するために、このコマンドを実行します。
 
     ```sql
     UPDATE Person.Address
@@ -249,13 +245,13 @@ This task will show you how to restore a database from an Azure blob storage.
     GO
     ```
 
-1. Re-run **Step 1** to verify that the address has been changed. Now imagine if someone had changed thousands or millions of rows without a WHERE clause – or the wrong WHERE clause. One of the solutions involves restoring the database from the last available backup.
+1. **ステップ1**を再実行し、住所が変更されたことを確認します。ここで、誰かが何千、何百万行をWHERE句なしで、あるいは間違ったWHERE句で変更した場合を想像してみてください。解決策の1つは、利用可能な最後のバックアップからデータベースをリストアすることです。
 
-    ![Screenshot showing the customer name after the update was executed.](../images/dp-300-module-15-lab-15.png)
+    このような場合、データベースを復元する必要があります。
 
-1. To restore the database to get it back to where it was before the customer name was mistakenly changed, execute the following.
+1. データベースを復元して、顧客名が誤って変更される前の状態に戻すには、以下を実行します。
 
-    **Note:** **SET SINGLE_USER WITH ROLLBACK IMMEDIATE** syntax the open transactions will all be rolled back. This can prevent the restore failing due to active connections.
+    **注：** **SET SINGLE_USER WITH ROLLBACK IMMEDIATE** 構文は、開いているトランザクションがすべてロールバックされるようにします。これにより、アクティブな接続が原因でリストアが失敗するのを防ぐことができます。
 
     ```sql
     USE [master]
@@ -272,16 +268,24 @@ This task will show you how to restore a database from an Azure blob storage.
     GO
     ```
 
-    Where **<storage_account_name>** is the unique storage account name you created.
+    ここで、**<storage_account_name>** は、作成した一意のストレージアカウント名です。
 
-    The output should be similar to this:
+    このような出力になるはずです。
 
-    ![Screenshot showing the restore database from URL being executed.](../images/dp-300-module-15-lab-20.png)
+    ![URLからデータベースの復元を実行した画面](../images/dp-300-module-15-lab-20.png)
 
-1. Re-run **Step 1** to verify that the customer name has been restored.
+1. **ステップ1**を再実行して、顧客名がリストアされたことを確認します。
 
-    ![Screenshot showing the column with the correct value.](../images/dp-300-module-15-lab-21.png)
+    ![正しい値を持つ列を示すスクリーンショット](../images/dp-300-module-15-lab-21.png)
 
-It is important to understand the components and the interaction to do a backup to or restore from the Azure Blob Storage service.
+Azure Blob Storage サービスへのバックアップまたはサービスからの復元を行うには、コンポーネントとその相互作用を理解することが重要です。
 
-You have now seen that you can back up a database to a URL in Azure and, if necessary, restore it.
+これで、データベースを Azure の URL にバックアップし、必要に応じてリストアできることがわかりました。
+
+
+
+
+
+
+
+
