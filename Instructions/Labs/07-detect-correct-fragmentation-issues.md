@@ -1,38 +1,36 @@
 ---
 lab:
-    title: 'Lab 7 – Detect and correct fragmentation issues'
-    module: 'Monitor and optimize operational resources in Azure SQL'
+    title: 'Lab 7 – フラグメンテーションの問題の検出と修正'
+    module: 'Azure SQL の運用リソースの監視と最適化'
 ---
 
-# Detect and correct fragmentation issues
+# フラグメンテーションの問題の検出と修正
 
-**Estimated Time: 15 minutes**
+**推定時間：15分**
 
-The students will take the information gained in the lessons to scope out the deliverables for a digital transformation project within AdventureWorks. Examining the Azure portal as well as other tools, students will determine how to utilize native tools to identify and resolve performance related issues. Finally, students will be able to identify fragmentation within the database as well as learn steps to resolve it appropriately.
+受講者は、レッスンで得た情報をもとに、AdventureWorks内のデジタルトランスフォーメーションプロジェクトの成果物のスコープを作成します。Azureポータルや他のツールを調べ、ネイティブツールをどのように活用してパフォーマンス関連の問題を特定し解決するかを決定します。最後に、データベース内のフラグメンテーションを特定し、適切に解決するためのステップを学びます。
 
-You have been hired as a database administrator to identify performance related issues and provide viable solutions to resolve any issues found. AdventureWorks has been selling bicycles and bicycle parts directly to consumers and distributors for over a decade. Recently the company has noticed performance degradation in their products that are used to service customer requests. You need to use SQL tools to identify the performance issues and suggest methods to resolve them.
+あなたは、データベース管理者として、パフォーマンスに関連する問題を特定し、発見された問題を解決するための実行可能なソリューションを提供するために採用されました。AdventureWorks は、10 年以上にわたり、自転車と自転車部品を消費者と販売店に直販しています。最近、同社は、顧客の要求を処理するために使用される製品の性能低下に気づきました。あなたは、SQL ツールを使用して、パフォーマンスの問題を特定し、それを解決する方法を提案する必要があります。
 
-**Note:** These exercises ask you to copy and paste T-SQL code. Please verify that the code has been copied correctly, before executing the code.
+**注意:** これらの演習では、T-SQL コードをコピーして貼り付けることが要求されます。コードを実行する前に、コードが正しくコピーされたことを確認してください。
 
-## Restore a database
+## データベースの復元
 
-1. Download the database backup file located on **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorks2017.bak** to **C:\LabFiles\Monitor and optimize** path on the lab virtual machine (create the folder structure if it does not exist).
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorks2017.bak** にあるデータベースのバックアップファイルをラボ仮想マシン上の **C:\LabFiles\Monitor and optimize** パスにダウンロードします（存在しない場合はフォルダ構造を作成します）。
 
     ![Picture 03](../images/dp-300-module-07-lab-03.png)
 
-1. Select the Windows Start button and type SSMS. Select **Microsoft SQL Server Management Studio 18** from the list.  
+1. Windowsのスタートボタンを選択し、SSMSと入力します。リストから **Microsoft SQL Server Management Studio 18** を選択します。 
 
-    ![Picture 01](../images/dp-300-module-01-lab-34.png)
-
-1. When SSMS opens, notice that the **Connect to Server** dialog will be pre-populated with the default instance name. Select **Connect**.
+1. SSMSが開くと、**Connect to Server** ダイアログにデフォルトのインスタンス名が事前に入力されていることに注意してください。**Connect**を選択します。
 
     ![Picture 02](../images/dp-300-module-07-lab-01.png)
 
-1. Select the **Databases** folder, and then **New Query**.
+1. Databases** フォルダを選択し、**New Query** を選択します。
 
     ![Picture 03](../images/dp-300-module-07-lab-04.png)
 
-1. In the new query window, copy and paste the below T-SQL into it. Execute the query to restore the database.
+1. 新しいクエリウィンドウで、以下のT-SQLをコピーして貼り付けます。データベースを復元するためにクエリを実行する。
 
     ```sql
     RESTORE DATABASE AdventureWorks2017
@@ -44,15 +42,15 @@ You have been hired as a database administrator to identify performance related 
             TO 'C:\LabFiles\Monitor and optimize\AdventureWorks2017_log.ldf';
     ```
 
-    **Note:** The database backup file name and path should match with what you've downloaded on step 1, otherwise the command will fail.
+    **注意：** データベースのバックアップファイルの名前とパスは、ステップ1でダウンロードしたものと一致させる必要があります。
 
-1. You should see a successful message after the restore is complete.
+1. リストア完了後、成功のメッセージが表示されるはずです。
 
     ![Picture 03](../images/dp-300-module-07-lab-05.png)
 
-## Investigate index fragmentation
+## インデックスの断片化を調べる
 
-1. Select **New Query**. Copy and paste the following T-SQL code into the query window. Select **Execute** to execute this query.
+1. **新規クエリ**を選択します。以下のT-SQLコードをコピーしてクエリウィンドウに貼り付けます。実行**を選択して、このクエリーを実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -70,9 +68,9 @@ You have been hired as a database administrator to identify performance related 
     WHERE avg_fragmentation_in_percent > 50 -- find indexes where fragmentation is greater than 50%
     ```
 
-    This query will report any indexes that have a fragmentation over **50%**. The query should not return any result.
+    このクエリーは、断片化が **50%** を超えるインデックスを報告します。このクエリーは結果を返すべきではありません。
 
-1. Select **New Query**. Copy and paste the following T-SQL code into the query window. Select **Execute** to execute this query.
+1. **新規クエリ** を選択します。以下のT-SQLコードをコピーして、クエリウィンドウに貼り付けます。実行**を選択して、このクエリを実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -101,13 +99,14 @@ You have been hired as a database administrator to identify performance related 
     GO
     ```
 
-    This query will increase the fragmentation level of the Person.Address table and its indexes by adding a large number of new records.
+    このクエリは、大量の新しいレコードを追加することで、Person.Address テーブルとそのインデックスの断片化レベルを増加させます。
 
-1. Execute the first query again. Now you should be able to see four highly fragmented indexes.
+1. 最初のクエリをもう一度実行します。今度は、4つの高度に断片化されたインデックスを確認することができるはずです。
 
     ![Picture 03](../images/dp-300-module-07-lab-06.png)
 
-1. Copy and paste the following T-SQL code into the query window. Select **Execute** to execute this query.
+
+1. 以下のT-SQLコードをコピーして、クエリウィンドウに貼り付けます。このクエリを実行するには、**実行** を選択します。
 
     ```sql
     SET STATISTICS IO,TIME ON
@@ -125,13 +124,13 @@ You have been hired as a database administrator to identify performance related 
     GO
     ```
 
-    Click on the **Messages** tab in the result pane of SQL Server Management Studio. Make note of the count of logical reads performed by the query.
+    SQL Server Management Studio の結果ペインで **Messages** タブをクリックします。クエリによって実行された論理読み込みのカウントをメモしておきます。
 
     ![Picture 03](../images/dp-300-module-07-lab-07.png)
 
-## Rebuild fragmented indexes
+## 断片化したインデックスの再構築
 
-1. Copy and paste the following T-SQL code into the query window. Select **Execute** to execute this query.
+1. 以下のT-SQLコードをコピーして、クエリウィンドウに貼り付けます。**実行**を選択して、このクエリを実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -147,7 +146,7 @@ You have been hired as a database administrator to identify performance related 
         ALLOW_PAGE_LOCKS = ON)
     ```
 
-1. Execute the query below to confirm that the **IX_Address_StateProvinceID** index no longer has fragmentation greater than 50%.
+1. 以下のクエリーを実行し、**IX_Address_StateProvinceID**インデックスの断片化が50％を超えていないことを確認します。
 
     ```sql
     USE AdventureWorks2017
@@ -164,9 +163,9 @@ You have been hired as a database administrator to identify performance related 
     WHERE i.name = 'IX_Address_StateProvinceID'
     ```
 
-    Comparing the results we can see the fragmentation dropped from 81% to 0.
+    この結果を比較すると、フラグメンテーションが81%から0に減少していることがわかります。
 
-1. Re-execute the select statement from the previous section. Make note of the logical reads in the **Messages** tab of the **Results** pane in Management Studio. Was there a change from the number of logical reads encountered before you rebuilt the index?
+1. 前のセクションのselect文を再実行します。Management Studio の **Results** ペインの **Messages** タブに、論理的な読み取りを記録します。インデックスを再構築する前に発生した論理読み込みの数から変化がありましたか？
 
     ```sql
     SET STATISTICS IO,TIME ON
@@ -184,6 +183,6 @@ You have been hired as a database administrator to identify performance related 
     GO
     ```
 
-Because the index has been rebuilt, it will now be as efficient as possible and the logical reads should reduce. You have now seen that index maintenance can have an effect on query performance.
+インデックスは再構築されたので、可能な限り効率的になり、論理的な読み込みは減少するはずです。これで、インデックスのメンテナンスがクエリのパフォーマンスに影響を与えることがわかりました。
 
-In this exercise, you've learned how to rebuild index and analyze logical reads to increase query performance.
+この演習では、クエリパフォーマンスを向上させるために、インデックスの再構築と論理読み込みの分析を行う方法を学びました。
