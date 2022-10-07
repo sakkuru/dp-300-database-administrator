@@ -16,7 +16,6 @@ lab:
 
 1. ラボ仮想マシンから、ブラウザセッションを開始し、[https://portal.azure.com](https://portal.azure.com/) に移動し、Azure サブスクリプションに関連付けられた Microsoft アカウントを使用してサインインします。
 
-    ![Picture 1](../images/dp-300-module-01-lab-01.png)
 
 1. ページの上部にある検索バーを探します。**Azure SQL** を検索します。サービス]の下に表示される[Azure SQL]の検索結果を選択します。
 
@@ -36,12 +35,12 @@ lab:
     - リソースグループ:**&lt;Your resource group&gt;**
     - 仮想マシン名:**azureSQLServerVM**
     - **Region:** &lt;リソースグループと同じリージョン&gt;
-    - **可用性オプション:**インフラストラクチャ冗長必要ありません**
+    - **可用性オプション:** **インフラストラクチャ冗長必要ありません**
     - **イメージ:** Free SQL Server License: SQL Server 2019 Developer on Windows Server 2022 - Gen1
     - **Spot割引:** チェックしない
     - **Size:** Standard *D2s_v3* (2 vCPU, 8 GiB memory)です。このオプションを表示するには、"See all sizes" リンクを選択する必要がある場合があります)
     - **管理者アカウントのユーザー名:** **sqladmin**
-    - **管理者アカウントのパスワード:**pwd!DP300lab01** (または条件を満たす独自のパスワード)
+    - **管理者アカウントのパスワード:** **pwd!DP300lab01** (または条件を満たす独自のパスワード)
     - **受信ポート:** RDP (3389)を選択します。
     - **既存の Windows Server ライセンスを使用しますか?:** チェックしない
 
@@ -51,21 +50,15 @@ lab:
 
 1. **ディスク** タブに移動し、設定を確認します。
 
-    ![Picture 13](../images/dp-300-module-01-lab-13.png)
 
 1. **ネットワーク** タブを開き、設定を確認します。
 
-    ![Picture 14](../images/dp-300-module-01-lab-14.png)
 
 1. **管理**タブを開き、設定を確認します。
 
-    ![Picture 15](../images/dp-300-module-01-lab-15.png)
-
     **自動シャットダウンを有効にする**のチェックが外れていることを確認します。
 
-1. 1. **Advanced** タブに移動し、設定を確認します。
-
-    ![Picture 16](../images/dp-300-module-01-lab-16.png)
+1. **詳細** タブに移動し、設定を確認します。
 
 1. **SQL Server の設定** タブを開き、設定を確認します。
 
