@@ -1,38 +1,37 @@
 ---
 lab:
-    title: 'Lab 8 – Identify and resolve blocking issues'
-    module: 'Optimize query performance in Azure SQL'
+    title: 'Lab 8 – ブロッキングの問題を特定し解決する'
+    module: 'Azure SQL でクエリ パフォーマンスを最適化する'
 ---
 
-# Identify and resolve blocking issues
 
-**Estimated Time: 15 minutes**
+# ブロッキングの問題を特定し解決する
 
-The students will take the information gained in the lessons to scope out the deliverables for a digital transformation project within AdventureWorks. Examining the Azure portal as well as other tools, students will determine how to utilize native tools to identify and resolve performance related issues. Finally, students will be able to identify and resolve blocking issues appropriately.
+**推定時間：15 分**
 
-You have been hired as a database administrator to identify performance related issues and provide viable solutions to resolve any issues found. You need to investigate the performance problems and suggest methods to resolve them.
+受講者は、レッスンで得た情報をもとに、AdventureWorks内のデジタルトランスフォーメーションプロジェクトの成果物のスコープを設定します。Azureポータルや他のツールを調べ、ネイティブツールをどのように活用してパフォーマンス関連の問題を特定し解決するかを決定します。最後に、ブロックの問題を適切に特定し、解決できるようになります。
 
-**Note:** These exercises ask you to copy and paste T-SQL code. Please verify that the code has been copied correctly, before executing the code.
+あなたは、パフォーマンス関連の問題を特定し、発見された問題を解決するための実行可能なソリューションを提供するデータベース管理者として採用されました。あなたは、パフォーマンスの問題を調査し、それを解決するための方法を提案する必要があります。
 
-## Restore a database
+**注意：** これらの演習では、T-SQL コードをコピーして貼り付けることが求められます。コードを実行する前に、コードが正しくコピーされたことを確認してください。
 
-1. Download the database backup file located on **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorks2017.bak** to **C:\LabFiles\Monitor and optimize** path on the lab virtual machine (create the folder structure if it does not exist).
+## データベースの復元
+
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorks2017.bak** にあるデータベースのバックアップファイルをラボ仮想マシン上の **C:\LabFiles\Monitor and optimize** パスにダウンロードします（存在しない場合はフォルダ構造を作成します）。
 
     ![Picture 03](../images/dp-300-module-07-lab-03.png)
 
-1. Select the Windows Start button and type SSMS. Select **Microsoft SQL Server Management Studio 18** from the list.  
+1. Windowsのスタートボタンを選択し、SSMSと入力します。リストから **Microsoft SQL Server Management Studio 18** を選択します。 
 
-    ![Picture 01](../images/dp-300-module-01-lab-34.png)
-
-1. When SSMS opens, notice that the **Connect to Server** dialog will be pre-populated with the default instance name. Select **Connect**.
+1. SSMSが開くと、**Connect to Server** ダイアログにデフォルトのインスタンス名が事前に入力されていることに注意してください。**Connect**を選択します。
 
     ![Picture 02](../images/dp-300-module-07-lab-01.png)
 
-1. Select the **Databases** folder, and then **New Query**.
+1. Databases** フォルダを選択し、**New Query** を選択します。
 
     ![Picture 03](../images/dp-300-module-07-lab-04.png)
 
-1. In the new query window, copy and paste the below T-SQL into it. Execute the query to restore the database.
+1. 新しいクエリウィンドウで、以下のT-SQLをコピーして貼り付けます。データベースを復元するためにクエリを実行する。
 
     ```sql
     RESTORE DATABASE AdventureWorks2017
@@ -44,15 +43,15 @@ You have been hired as a database administrator to identify performance related 
             TO 'C:\LabFiles\Monitor and optimize\AdventureWorks2017_log.ldf';
     ```
 
-    **Note:** The database backup file name and path should match with what you've downloaded on step 1, otherwise the command will fail.
+    **注意：** データベースのバックアップファイルの名前とパスは、ステップ1でダウンロードしたものと一致させる必要があります。
 
-1. You should see a successful message after the restore is complete.
+1. リストア完了後、成功のメッセージが表示されるはずです。
 
     ![Picture 03](../images/dp-300-module-07-lab-05.png)
 
-## Run blocked queries report
+## ブロックされたクエリレポートの実行
 
-1. Select **New Query**. Copy and paste the following T-SQL code into the query window. Select **Execute** to execute this query.
+1. **新規クエリ**を選択します。以下の T-SQL コードをコピーしてクエリーウィンドウに貼り付けます。実行**を選択し、このクエリを実行します。
 
     ```sql
     USE MASTER
@@ -72,18 +71,18 @@ You have been hired as a database administrator to identify performance related 
     GO
     ```
 
-    The above T-SQL code will create an Extended Event session that will capture blocking events. The data will contain the following elements:
+    上記のT-SQLコードは、ブロッキング・イベントを捕捉する拡張イベント・セッションを作成します。データには以下の要素が含まれます。
 
-    - Client application name
-    - Client host name
-    - Database ID
-    - Database name
-    - NT Username
-    - Session ID
-    - T-SQL Text
-    - Username
+    - クライアントアプリケーション名
+    - クライアントホスト名
+    - データベースID
+    - データベース名
+    - NTユーザー名
+    - セッションID
+    - T-SQL テキスト
+    - ユーザー名
 
-1. Select **New Query**. Copy and paste the following T-SQL code into the query window. Select **Execute** to execute this query.
+1. **新規クエリ**を選択します。以下のT-SQLコードをコピーして、クエリウィンドウに貼り付けます。実行**を選択して、このクエリを実行します。
 
     ```sql
     EXEC sys.sp_configure N'show advanced options', 1
@@ -94,9 +93,9 @@ You have been hired as a database administrator to identify performance related 
     GO
     ```
 
-    **Note:** The command above specify the threshold, in seconds, at which blocked process reports are generated. As a result, we are not required to wait as long for the *blocked_process_report* to be raised in this lesson.
+    **注意:** 上記のコマンドは、ブロックされたプロセスのレポートが生成される閾値を秒単位で指定します。その結果、このレッスンでは、*blocked_process_report* が発生するのを長く待つ必要はありません。
 
-1. Select **New Query**. Copy and paste the following T-SQL code into the query window. Select **Execute** to execute this query.
+1. **新規クエリ** を選択します。以下のT-SQLコードをコピーしてクエリウィンドウに貼り付けます。実行** を選択して、このクエリを実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -109,7 +108,7 @@ You have been hired as a database administrator to identify performance related 
     GO
     ```
 
-1. Open another query window by selecting the **New Query** button. Copy and paste the following T-SQL code into the new query window. Select **Execute** to execute this query.
+1. **新しいクエリ**ボタンを選択して、別のクエリウィンドウを開きます。次の T-SQL コードをコピーして、新しいクエリウィンドウに貼り付けます。実行** を選択し、このクエリを実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -122,27 +121,27 @@ You have been hired as a database administrator to identify performance related 
     WHERE FirstName = 'David'
     ```
 
-    **Note:** this query does not return any results and appears to run indefinitely.
+    **注意：** このクエリは結果を返さず、無限に実行されるように見えます。
 
-1. In **Object Explorer**, expand  **Management** -> **Extended Events** -> **Sessions**.
+1. オブジェクト・エクスプローラー**で、**管理**→*拡張イベント**→*セッション**を展開します。
 
-    Notice the extended event named *Blocking* we just created is in the list.
+    先ほど作成した*Blocking*という名前の拡張イベントがリストに入っていることに注意してください。
 
     ![Picture 01](../images/dp-300-module-08-lab-01.png)
 
-1. Right click on **package0.ring_buffer**, and then select **View Target Data**.
+1. **package0.ring_buffer**を右クリックし、**View Target Data**を選択します。
 
     ![Picture 02](../images/dp-300-module-08-lab-02.png)
 
-1. Select the hyperlink.
+1. ハイパーリンクを選択します。
 
     ![Picture 03](../images/dp-300-module-08-lab-03.png)
 
-1. The XML will show you which processes are being blocked, and which process is causing the blocking. You can see the queries that ran in this process as well as system information.
+1. どのプロセスがブロックされているのか、どのプロセスがブロックを起こしているのか、XMLで表示されます。システム情報だけでなく、このプロセスで実行されたクエリも確認することができます。
 
     ![Picture 04](../images/dp-300-module-08-lab-04.png)
 
-1. Alternatively, you can run the query below to identify sessions blocking other sessions, including a list of session IDs blocked per *session_id*.
+1. また、以下のクエリを実行することで、他のセッションをブロックしているセッションを特定することができます（*session_id*ごとにブロックされているセッションIDのリストも含まれます）。
 
     ```sql
     WITH cteBL (session_id, blocking_these) AS 
@@ -166,21 +165,21 @@ You have been hired as a database administrator to identify performance related 
 
     ![Picture 05](../images/dp-300-module-08-lab-05.png)
 
-1. Right click on extended event named **Blocking**, and then select **Stop Session**.
+1. 拡張イベント「**Blocking**」を右クリックし、「*Stop Session*」を選択します。
 
     ![Picture 06](../images/dp-300-module-08-lab-06.png)
 
-1. Navigate back to the query session that is causing the blocking, and type `ROLLBACK TRANSACTION` on the line below the query. Highlight `ROLLBACK TRANSACTION`, and select **Execute**.
+1. ブロックの原因となっているクエリセッションに戻り、クエリの下の行に `ROLLBACK TRANSACTION` と入力します。ROLLBACK TRANSACTION`をハイライト表示し、**Execute**を選択します。
 
     ![Picture 07](../images/dp-300-module-08-lab-07.png)
 
-1. Navigate back to the query session that was being blocked. You will notice that the query has now completed.
+1. ブロックされていたクエリセッションに戻ります。クエリーが完了したことがわかります。
 
     ![Picture 08](../images/dp-300-module-08-lab-08.png)
 
-## Enable Read Commit Snapshot isolation level
+## リード・コミット・スナップショットの分離レベルを有効にする
 
-1. Select **New Query** from SQL Server Management Studio. Copy and paste the following T-SQL code into the query window. Select the **Execute** button to execute this query.
+1. SQL Server Management Studioから**New Query**を選択します。以下のT-SQLコードをコピーしてクエリウィンドウに貼り付けます。実行**ボタンを選択し、このクエリを実行します。
 
     ```sql
     USE master
@@ -190,7 +189,7 @@ You have been hired as a database administrator to identify performance related 
     GO
     ```
 
-1. Rerun the query that caused the blocking in a new query editor.
+1. 新しいクエリエディタで、ブロックの原因となったクエリを再実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -202,7 +201,7 @@ You have been hired as a database administrator to identify performance related 
     GO
     ```
 
-1. Rerun the query that was being blocked in a new query editor.
+1. 新しいクエリエディタでブロックされているクエリを再実行します。
 
     ```sql
     USE AdventureWorks2017
@@ -217,8 +216,8 @@ You have been hired as a database administrator to identify performance related 
 
     ![Picture 09](../images/dp-300-module-08-lab-09.png)
 
-    Why the same query completes whereas in the previous task it was blocked by the update statement?
+    前のタスクではupdate文でブロックされたのに、なぜ同じクエリが完了するのでしょうか？
 
-    Read Commit Snapshot isolation level is an optimistic form of transaction isolation, and the last query will show the latest committed version of the data, rather than being blocked.
+    リード・コミット・スナップショット分離レベルはトランザクション分離の楽観的な形態であり、最後のクエリはブロックされるのではなく、データの最新コミット・バージョンを表示することになります。
 
-In this exercise, you've learned how to identify sessions being blocked, and to mitigate those scenarios.
+この演習では、ブロックされているセッションを特定する方法と、それらのシナリオを軽減する方法を学びました。
