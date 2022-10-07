@@ -1,91 +1,92 @@
 ---
 lab:
-    title: 'Lab 4 – Configure Azure SQL Database firewall rules'
-    module: 'Implement a Secure Environment for a Database Service'
+    title: 'Lab 4 – Azure SQL データベース ファイアウォール ルールを構成する'
+    module: 'データベース サービスのセキュアな環境を実装する'
 ---
 
-# Implement a Secure Environment
+# セキュアな環境の実装
 
-**Estimated Time: 30 minutes**
+**推定時間：30分**
 
-The students will take the information gained in the lessons to configure and subsequently implement security in the Azure Portal and within the AdventureWorks database.
+受講者は、レッスンで得た情報をもとに、AzureポータルおよびAdventureWorksデータベース内のセキュリティを設定し、その後、実装します。
 
-You have been hired as a Senior Database Administrator to help ensure the security of the database environment. These tasks will focus on Azure SQL Database.
+あなたは、データベース環境のセキュリティを確保するために、シニアデータベース管理者として採用されました。これらのタスクは、Azure SQL Databaseに焦点を当てます。
 
-**Note:** These exercises ask you to copy and paste T-SQL code. Please verify that the code has been copied correctly, before executing the code.
+**注：** これらの演習では、T-SQL コードをコピーして貼り付けるよう求められます。コードを実行する前に、コードが正しくコピーされていることを確認してください。
 
-## Configure Azure SQL Database firewall rules
+## Azure SQL Database のファイアウォールルールを設定する。
 
-1. From the lab virtual machine, start a browser session and navigate to [https://portal.azure.com](https://portal.azure.com/). Connect to the Portal using the Azure **Username** and **Password** provided on the **Resources** tab for this lab virtual machine.
+1. ラボ仮想マシンから、ブラウザー セッションを開始し、[https://portal.azure.com](https://portal.azure.com/) にナビゲートします。このラボ仮想マシンの **Resources** タブで提供される Azure **Username** と **Password** を使用して、ポータルに接続します。
 
     ![Picture 1](../images/dp-300-module-01-lab-01.png)
 
-1. From the Azure Portal, search for “SQL servers” in the search box at the top, then click **SQL servers** from the list of options.
+1. Azure ポータルから、上部の検索ボックスで「SQL Server」を検索し、オプションの一覧から **SQL Server** をクリックします。
 
-    ![A screenshot of a social media post Description automatically generated](../images/dp-300-module-04-lab-1.png)
+    ![ソーシャルメディアへの投稿画面 説明が自動生成される](../images/dp-300-module-04-lab-1.png)
 
-1. Select the server name **dp300-lab-XXXXXXXX** to be taken to the detail page (you may have a different resource group and location assigned for your SQL server).
+1. サーバー名 **dp300-lab-XXXXXXXX** を選択して、詳細ページを表示します（SQLサーバーには別のリソースグループと場所が割り当てられている場合があります）。
 
-    ![A screenshot of a social media post Description automatically generated](../images/dp-300-module-04-lab-2.png)
+    ![ソーシャルメディアへの投稿画面 自動生成された説明文](../images/dp-300-module-04-lab-2.png)
 
-1. In the detail screen for your SQL server, move your mouse to the right of the server name, and then select **Copy to clipboard** button as shown below.
+1. SQLサーバーの詳細画面で、以下のようにサーバー名をクリップボードにコピーします。
 
-    ![Picture 2](../images/dp-300-module-04-lab-3.png)
+    ![写真2](../images/dp-300-module-04-lab-3.png)
 
-1. Select **Show networking settings**.
+1. **ネットワーク設定を表示する**を選択します。
 
-    ![Picture 2](../images/dp-300-module-04-lab-4.png)
+    ![写真2](../images/dp-300-module-04-lab-4.png)を選択します。
 
-1. On the **Networking** page, click on **+ Add your client IPv4 address (your IP address)**, and then click **Save**.
+1. **ネットワーク**ページで、**+ クライアントIPv4アドレスの追加**をクリックし、**保存**をクリックします。
 
-    ![Picture 3](../images/dp-300-module-04-lab-5.png)
+   ![ 写真3](../images/dp-300-module-04-lab-5.png)
 
-    **Note:** Your client IP address was automatically entered for you. Adding your client IP address to the list will allow you to connect to your Azure SQL Database using SQL Server Management Studio or any other client tools. **Make note of your client IP address, you will use it later.**
+    **注意：** クライアントのIPアドレスは自動的に入力されました。クライアントIPアドレスを追加することで、SQL Server Management Studioやその他のクライアントツールを使用してAzure SQL Databaseに接続することができるようになります。**クライアント IP アドレス** は、後で使用するのでメモしておいてください。
 
-1. Open SQL Server Management Studio. On the Connect to Server dialog box, paste in the name of your Azure SQL Database server, and login with the credentials below:
+1. SQL Server Management Studio を起動します。サーバーへの接続ダイアログボックスで、Azure SQL Databaseのサーバー名を貼り付けて、以下の認証情報でログインします。
 
-    - **Server name:** &lt;_paste your Azure SQL Database server name here_&gt;
-    - **Authentication:** SQL Server Authentication
-    - **Server admin login:** sqladmin
-    - **Password:** P@ssw0rd01
+    - **サーバー名:** &lt;_paste your Azure SQL Database server name here_&gt;
+    - **認証:** SQL Server 認証
+    - **サーバー管理者ログイン:** sqladmin
+    - **パスワード:** P@ssw0rd01
 
-    ![A screenshot of a cell phone Description automatically generated](../images/dp-300-module-04-lab-6.png)
+    ![携帯電話の画面説明の自動生成](../images/dp-300-module-04-lab-6.png)
 
-1. Click **Connect**.
+1. **Connect** をクリックします。
 
-1. In Object Explorer expand the server node, and right click on **Databases**. Click **Import a Data-tier Application**.
+1. オブジェクトエクスプローラでサーバーノードを展開し、**Databases**を右クリックします。**データ層アプリケーションのインポート** をクリックします。
 
-    ![A screenshot of a social media post Description automatically generated](../images/dp-300-module-04-lab-7.png)
+    ![ソーシャルメディア投稿のスクリーンショット 自動生成された説明](../images/dp-300-module-04-lab-7.png)をクリックします。
 
-1. In the **Import Data Tier Application** dialog, click **Next** on the first screen.
+1. データ層アプリケーションのインポート**ダイアログで、最初の画面で **Next** をクリックします。
 
-1. Download the .bacpac file located on **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorksLT.bacpac** to **C:\LabFiles\Secure Environment**  path on the lab VM (create the folder structure if it does not exist).
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorksLT.bacpac** にある .bacpac ファイルを、ラボ VM 上の **C:\LabFilesSecure Environment** パスにダウンロードします（存在しない場合はフォルダー構造を作成します）。
 
-1. In the **Import Settings** screen, click **Browse** and navigate to **C:\LabFiles\Secure Environment** folder, click on the **AdventureWorksLT.bacpac** file, and then click **Open**. Back to the **Import Data-tier Application** screen click **Next**.
+1. 1. **Import Settings** 画面で **Browse** をクリックして **C:\LabFilesSecure Environment** フォルダに移動し、 **AdventureWorksLT.bacpac** ファイルをクリックし、**Open** をクリックしてください。**Import Data-tier Application** の画面に戻り、**Next**をクリックします。
 
-    ![A screenshot of a social media post Description automatically generated](../images/dp-300-module-04-lab-8.png)
+    ![ソーシャルメディアへの投稿の説明文が自動生成されます](../images/dp-300-module-04-lab-8.png)
 
-    ![A screenshot of a social media post Description automatically generated](../images/dp-300-module-04-lab-9.png)
+    ![ソーシャルメディアへの投稿画面 説明文は自動生成されます](../images/dp-300-module-04-lab-9.png)
 
-1. On the **Database Settings** screen, make the changes as below:
+1. **データベース設定** 画面にて、以下のように変更します。
 
-    - **Database name:** AdventureWorksFromBacpac
-    - **Edition of Microsoft Azure SQL Database**: Basic
+    - **データベース名:** AdventureWorksFromBacpac
+    - **Microsoft Azure SQL Databaseのエディション:** Basic
 
-    ![A screenshot of a cell phone Description automatically generated](../images/dp-300-module-04-lab-10.png)
+    ![携帯電話の画面説明の自動生成](../images/dp-300-module-04-lab-10.png)
 
-1. Click **Next**.
+1. **次へ**をクリックします。
 
-1. On the **Summary** screen click **Finish**. When your import completes you will see the results below. Then click **Close**.
+1. **Summary** 画面で、**Finish**をクリックします。インポートが完了すると、以下のような結果が表示されます。その後、**Close**をクリックします。
 
-    ![A screenshot of a cell phone Description automatically generated](../images/dp-300-module-04-lab-11.png)
+    ![携帯電話の画面説明の自動生成](../images/dp-300-module-04-lab-11.png)をクリックします。
 
-1. Back to SQL Server Management Studio, in **Object Explorer**, expand the **Databases** folder. Then right-click on **AdventureWorksFromBacpac** database, and then **New Query**.
+1. SQL Server Management Studioに戻り、**Object Explorer**で**Databases**フォルダを展開します。次に、**AdventureWorksFromBacpac**データベースを右クリックし、**New Query**を選択します。
 
-    ![A screenshot of a cell phone Description automatically generated](../images/dp-300-module-04-lab-12.png)
+    ![携帯電話の説明文のスクリーンショットが自動的に生成されます](../images/dp-300-module-04-lab-12.png)
 
-1. Execute the following T-SQL query by pasting the text into your query window.
-    1. **Important:** Replace **000.000.000.00** with your client IP address. Click **Execute** or press **F5**.
+
+1. 以下の T-SQL クエリをクエリウィンドウに貼り付けて実行します。
+    1. **重要：** 000.000.000.00**をクライアントのIPアドレスに置き換えてください。**実行**をクリックするか、**F5**を押します。
 
     ```sql
     EXECUTE sp_set_database_firewall_rule 
@@ -94,7 +95,7 @@ You have been hired as a Senior Database Administrator to help ensure the securi
             @end_ip_address = '000.000.000.00'
     ```
 
-1. Next you will create a contained user in the **AdventureWorksFromBacpac** database. Click **New Query** and execute the following T-SQL.
+1. 次に、**AdventureWorksFromBacpac** データベースに含まれるユーザーを作成します。**New Query**をクリックし、以下のT-SQLを実行します。
 
     ```sql
     USE [AdventureWorksFromBacpac]
@@ -102,35 +103,35 @@ You have been hired as a Senior Database Administrator to help ensure the securi
     CREATE USER ContainedDemo WITH PASSWORD = 'P@ssw0rd01'
     ```
 
-    ![A screenshot of a cell phone Description automatically generated](../images/dp-300-module-04-lab-13.png)
+    携帯電話のスクリーンショット 自動生成された説明文](../images/dp-300-module-04-lab-13.png)
 
-    **Note:** This command creates a contained user within the **AdventureWorksFromBacpac** database. We will test this credential in the next step.
+    **注：** このコマンドは、**AdventureWorksFromBacpac**データベース内に含まれるユーザーを作成します。次のステップでは、このクレデンシャルをテストします。
 
-1. Navigate to the **Object Explorer**. Click on **Connect**, and then **Database Engine**.
+1. 1. **Object Explorer** に移動します。Connect**をクリックし、次に**Database Engine**をクリックします。
 
     ![Picture 1960831949](../images/dp-300-module-04-lab-14.png)
 
-1. Attempt to connect with the credentials you created in the previous step. You will need to use the following information:
+1. 前のステップで作成した認証情報を使って接続を試みます。以下の情報を使用する必要があります。
 
-    - **Login:** ContainedDemo
-    - **Password:** P@ssw0rd01
+    - ログイン:** ContainedDemo
+    - パスワード:** P@ssw0rd01
 
-     Click **Connect**.
+     **Connect** をクリックします。
 
-     You will receive the following error.
+     次のエラーが表示されます。
 
-    ![A screenshot of a cell phone Description automatically generated](../images/dp-300-module-04-lab-15.png)
+    ![携帯電話の説明のスクリーンショットが自動生成されました](../images/dp-300-module-04-lab-15.png)
 
-    **Note:** This error is generated because the connection attempted to login to the *master* database and not **AdventureWorksFromBacpac** where the user was created. Change the connection context by clicking **OK** to exit the error message, and then clicking on **Options >>** in the **Connect to Server** dialog box as shown below.
+    **注：** このエラーは、接続が、ユーザーが作成された**AdventureWorksFromBacpac**ではなく、**master*データベースにログインしようとしたために発生します。OK**をクリックしてエラーメッセージを終了し、次に示すように**Connect to Server**ダイアログボックスで**Options >>*をクリックして、接続コンテキストを変更します。
 
     ![Picture 9](../images/dp-300-module-04-lab-16.png)
 
-1. On the **Connection Properties** tab, type the database name **AdventureWorksFromBacpac**, and then click **Connect**.
+1. **接続のプロパティ** タブで、データベース名 **AdventureWorksFromBacpac** を入力し、[接続]をクリックします**。
 
-    ![A screenshot of a social media post Description automatically generated](../images/dp-300-module-04-lab-17.png)
+    ソーシャルメディアへの投稿のスクリーンショット 自動生成された説明](../images/dp-300-module-04-lab-17.png)
 
-1. Notice that you were able to successfully authenticate using the **ContainedDemo** user. This time you were directly logged into **AdventureWorksFromBacpac**, which is the only database to which the newly created user has access to.
+1. **ContainedDemo** というユーザーを使って認証に成功したことに注意してください。今回は、新しく作成したユーザーがアクセスできる唯一のデータベースである **AdventureWorksFromBacpac** に直接ログインしています。
 
     ![Picture 10](../images/dp-300-module-04-lab-18.png)
 
-In this exercise, you've configured server and database firewall rules to access a database hosted on Azure SQL Database. You've also used T-SQL statements to create a contained user, and used SQL Server Management Studio to check the access.
+この演習では、Azure SQL Database でホストされているデータベースにアクセスするために、サーバーとデータベースのファイアウォール ルールを設定しました。また、T-SQLステートメントを使用して、含まれるユーザーを作成し、SQL Server Management Studioを使用して、アクセスを確認しました。
