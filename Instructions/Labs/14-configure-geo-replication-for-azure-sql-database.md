@@ -1,102 +1,90 @@
 ---
 lab:
-    title: 'Lab 14 – Configure geo-replication for Azure SQL Database'
-    module: 'Plan and implement a high availability and disaster recovery solution'
+    title: 'Lab 14 – Azure SQL Database のジオ レプリケーションを設定する'
+    module: '高可用性と災害復旧ソリューションの計画と実装'
 ---
 
-# Configure geo replication for Azure SQL Database
+# Azure SQL Database のジオレプリケーションを構成する
 
-**Estimated Time: 30 minutes**
+**見積もり時間：30分**
 
-As a DBA within AdventureWorks, you need to enable geo-replication for Azure SQL Database, and ensure it is working properly. Additionally, you will manually fail it over to another region using the portal.
+AdventureWorksのDBAとして、Azure SQL Databaseのジオレプリケーションを有効にし、正しく動作していることを確認する必要があります。さらに、ポータルを使用して手動で別のリージョンにフェイルオーバーすることになります。
 
-## Enable geo-replication
+## ジオレプリケーションの有効化
 
-1. From the lab virtual machine, start a browser session and navigate to [https://portal.azure.com](https://portal.azure.com/). Connect to the Portal using the Azure **Username** and **Password** provided on the **Resources** tab for this lab virtual machine.
+1. ラボの仮想マシンから、ブラウザ セッションを開始し、[https://portal.azure.com](https://portal.azure.com/) に移動します。このラボ仮想マシンの **Resources** タブで提供された Azure **Username** と **Password** を使用して、ポータルに接続します。
 
-    ![Screenshot of Azure portal sign in page](../images/dp-300-module-01-lab-01.png)
+1. Azure ポータルで、**sql databases** を検索して、データベースに移動します。
 
-1. In the Azure portal, navigate to your database by searching for **sql databases**.
+    ![既存の SQL データベースを検索する画面](../images/dp-300-module-13-lab-03.png)
 
-    ![Screenshot of searching for existing SQL databases.](../images/dp-300-module-13-lab-03.png)
+1. SQLデータベース **AdventureWorksLT** を選択します。
 
-1. Select the SQL database **AdventureWorksLT**.
+1. データベースのブレードで、**データ管理**セクションで、**レプリカ**を選択します。
 
-    ![Screenshot of selecting the AdventureWorks SQL database.](../images/dp-300-module-13-lab-04.png)
+    ![Geo-Replicationを選択している画面](../images/dp-300-module-14-lab-01.png)
 
-1. On the blade for the database, in **Data management** section, select **Replicas**.
+1. **レプリカの作成**を選択します。
 
-    ![Screenshot showing selecting Geo-Replication.](../images/dp-300-module-14-lab-01.png)
+    ![Geo-Replicationページを選択した画面](../images/dp-300-module-14-lab-02.png)
 
-1. Select **+ Create replica**.
+1. **SQL Database - geo レプリカの作成**ページで、**サーバー**の下にある**新規作成**リンクを選択します。
 
-    ![Screenshot showing selecting Geo-Replication page.](../images/dp-300-module-14-lab-02.png)
+    ![サーバーの新規作成リンクを表示した画面](../images/dp-300-module-14-lab-03.png)
 
-1. On the **Create SQL Database - Geo Replica** page and under **Server**, select the **Create New** link.
+    >[!注意]。
+    > セカンダリデータベースをホストするために新しいサーバーを作成するので、上記のエラーメッセージは無視できます。
 
-    ![Screenshot showing Create New server link.](../images/dp-300-module-14-lab-03.png)
+1. **Create SQL Database Server** ページで、お好みの一意の **サーバー名**と**場所**を選択します。
 
-    >[!NOTE]
-    > As we are creating a new server to host our secondary database, we can ignore the error message above.
+1. SQL認証を選択し、有効な**サーバー管理者ログイン**、セキュかな**パスワード** を入力します。**OK**を選択してサーバーを作成します。
 
-1. On the **Create SQL Database Server** page, enter a unique **server name** of your preference, a valid **server admin login**, and a secure **password**. Select a **location** as the target region, and then select **OK** to create the server.
+    ![SQLデータベース・サーバーの作成ページのスクリーンショット](../images/dp-300-module-14-lab-04.png)
 
-    ![Screenshot showing the Create SQL Database Server page.](../images/dp-300-module-14-lab-04.png)
+1. **SQL Database - geo レプリカの作成** ページに戻り、**確認および作成** を選択します。
 
-1. Back in to the **Create SQL Database - Geo Replica** page, select **Review + Create**.
+    ![SQLデータベースサーバーの作成画面](../images/dp-300-module-14-lab-05.png)を選択します。
 
-    ![Screenshot showing the Create SQL Database Server page.](../images/dp-300-module-14-lab-05.png)
+1. **作成**を選択します。
 
-1. Select **Create**.
+1. これで、セカンダリサーバとデータベースが作成されます。
 
-    ![Screenshot showing the review and create page.](../images/dp-300-module-14-lab-06.png)
+## SQL Database をセカンダリーリージョンにフェイルオーバーする
 
-1. The secondary server and the database will now be created. To check the status, look under the notification icon at the top of the portal. 
+Azure SQL Database のレプリカが作成されたので、フェイルオーバーを実行します。
 
-    ![Screenshot showing the review and create page.](../images/dp-300-module-14-lab-07.png)
+1. SQL サーバー ページに移動し、リストに新しいサーバーがあることに気づきます。セカンダリーサーバーを選択します（サーバー名が異なる場合があります）。
 
-1. If successful, it will progress from **Deployment in progress** to **Deployment succeeded**.
+    ![SQLサーバーページの画面](../images/dp-300-module-14-lab-09.png)
 
-    ![Screenshot showing the review and create page.](../images/dp-300-module-14-lab-08.png)
+1. SQLサーバーのブレードで、**設定**セクションで、**SQL データベース**を選択します。
 
-## Failover SQL Database to a secondary region
+    ![SQLデータベースオプションの画面](../images/dp-300-module-14-lab-10.png)
 
-Now that the Azure SQL Database replica is created, you will perform a failover.
+1. SQLデータベースのメインブレードで、**データ管理**セクションから**レプリカ**を選択します。
 
-1. Navigate to the SQL servers page, and notice the new server in the list. Select the secondary server (you may have a different server name).
+1. ジオレプリケーションのリンクが確立されていることに注意してください。
 
-    ![Screenshot showing SQL servers page.](../images/dp-300-module-14-lab-09.png)
+    ![レプリカを選択した画面](../images/dp-300-module-14-lab-11.png)
 
-1. On the blade for the SQL server, in **Settings** section, select **SQL databases**.
+1. セカンダリサーバーの **...** メニューを選択し、**強制フェールオーバー**を選択します。
 
-    ![Screenshot showing SQL databases option.](../images/dp-300-module-14-lab-10.png)
+    ![強制フェイルオーバーオプションを示すスクリーンショット](../images/dp-300-module-14-lab-12.png)
 
-1. On the SQL database main blade, in **Data management** section, select **Replicas**.
+    > [!注意]
+    > 強制フェイルオーバーでは、セカンダリデータベースがプライマリの役割に切り替わります。この操作の間、すべてのセッションは切断されます。
 
-    ![Screenshot showing selecting Geo-Replication.](../images/dp-300-module-14-lab-01.png)
+1. 警告メッセージが表示されたら、[**はい**]をクリックします。
 
-1. Note that the geo replication link is now established.
+    ![強制フェイルオーバーの警告メッセージのスクリーンショット](../images/dp-300-module-14-lab-13.png)
 
-    ![Screenshot showing the Replicas option.](../images/dp-300-module-14-lab-11.png)
+1. プライマリレプリカのステータスが**保留中**に、セカンダリレプリカのステータスが**フェイルオーバー**に切り替わります。
 
-1. Select the **...** menu for the secondary server, and select **Forced Failover**.
+    ![強制フェイルオーバーの警告メッセージのスクリーンショット](../images/dp-300-module-14-lab-14.png)
 
-    ![Screenshot showing the forced failover option.](../images/dp-300-module-14-lab-12.png)
+    > [!注意]
+    > この処理には数分かかることがあります。完了すると、セカンダリが新しいプライマリに、古いプライマリがセカンダリになり、役割が切り替わります。
 
-    > [!NOTE]
-    > Forced failover will switch the secondary database to the primary role. All sessions are disconnected during this operation.
+ここまでで、読み取り可能なセカンダリデータベースは、プライマリと同じ Azure リージョンにある場合もあれば、異なるリージョンにある場合もあることがわかりました。このような読み取り可能なセカンダリデータベースは、ジオセカンダリ、またはジオレプリカとも呼ばれます。
 
-1. When prompted by the warning message, click **Yes**.
-
-    ![Screenshot showing a forced failover warning message.](../images/dp-300-module-14-lab-13.png)
-
-1. The status of the primary replica will switch to **Pending** and the secondary to **Failover**. 
-
-    ![Screenshot showing a forced failover warning message.](../images/dp-300-module-14-lab-14.png)
-
-    > [!NOTE]
-    > This process can take a few minutes. When complete, the roles will switch with the secondary becoming the new primary, and the old primary the secondary.
-
-We've seen the readable secondary database may be in the same Azure region as the primary, or, more commonly, in a different region. This kind of readable secondary databases are also known as geo-secondaries, or geo-replicas.
-
-You have now seen how to enable geo-replicas for Azure SQL Database, and manually fail it over to another region using the portal.
+ここまでで、Azure SQL Databaseのジオレプリカを有効にする方法と、ポータルを使って手動で別のリージョンにフェイルオーバーさせる方法を確認しました。
