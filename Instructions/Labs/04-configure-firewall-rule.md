@@ -55,7 +55,7 @@ lab:
 
     ![ソーシャルメディア投稿のスクリーンショット 自動生成された説明](../images/dp-300-module-04-lab-7.png)をクリックします。
 
-1. データ層アプリケーションのインポート**ダイアログで、最初の画面で **Next** をクリックします。
+1. **データ層アプリケーションのインポート**ダイアログで、最初の画面で **Next** をクリックします。
 
 1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorksLT.bacpac** にある .bacpac ファイルを、ラボ VM 上の **C:\LabFiles\Secure Environment** パスにダウンロードします（存在しない場合はフォルダー構造を作成します）。
 
