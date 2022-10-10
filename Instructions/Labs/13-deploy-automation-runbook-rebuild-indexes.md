@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Lab 13 – インデックスを自動的に再構築するための自動化Runbookを導入する'
+    title: 'Lab 13 – Automation Runbook をデプロイして、インデックスを自動的に再構築する'
     module: 'Azure SQL のデータベース タスクを自動化する'
 ---
 
-# インデックスを自動的に再構築するための自動化Runbookの導入
+# Automation Runbook をデプロイして、インデックスを自動的に再構築する
 
 **見積もり時間: 30 分**
 
