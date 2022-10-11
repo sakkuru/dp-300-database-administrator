@@ -59,7 +59,7 @@ lab:
 
 1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/AdventureWorksLT.bacpac** にある .bacpac ファイルを、ラボ VM 上の **C:\LabFiles\Secure Environment** パスにダウンロードします（存在しない場合はフォルダー構造を作成します）。
 
-1. 1. **Import Settings** 画面で **Browse** をクリックして **C:\LabFilesSecure Environment** フォルダに移動し、 **AdventureWorksLT.bacpac** ファイルをクリックし、**Open** をクリックしてください。**Import Data-tier Application** の画面に戻り、**Next**をクリックします。
+1. **Import Settings** 画面で **Browse** をクリックして **C:\LabFilesSecure Environment** フォルダに移動し、 **AdventureWorksLT.bacpac** ファイルをクリックし、**Open** をクリックしてください。**Import Data-tier Application** の画面に戻り、**Next**をクリックします。
 
     ![ソーシャルメディアへの投稿の説明文が自動生成されます](../images/dp-300-module-04-lab-8.png)
 
@@ -84,7 +84,7 @@ lab:
 
 
 1. 以下の T-SQL クエリをクエリウィンドウに貼り付けて実行します。
-    1. **重要：** 000.000.000.00**をクライアントのIPアドレスに置き換えてください。**実行**をクリックするか、**F5**を押します。
+    1. **重要：** **000.000.000.00** をクライアントのIPアドレスに置き換えてください。 **実行** をクリックするか、**F5** を押します。
 
     ```sql
     EXECUTE sp_set_database_firewall_rule 
@@ -101,11 +101,11 @@ lab:
     CREATE USER ContainedDemo WITH PASSWORD = 'P@ssw0rd01'
     ```
 
-    携帯電話のスクリーンショット 自動生成された説明文](../images/dp-300-module-04-lab-13.png)
+    ![携帯電話のスクリーンショット 自動生成された説明文](../images/dp-300-module-04-lab-13.png)
 
     **注：** このコマンドは、**AdventureWorksFromBacpac**データベース内に含まれるユーザーを作成します。次のステップでは、このクレデンシャルをテストします。
 
-1. 1. **Object Explorer** に移動します。Connect**をクリックし、次に**Database Engine**をクリックします。
+1. **Object Explorer** に移動します。**Connect** をクリックし、次に **Database Engine** をクリックします。
 
     ![Picture 1960831949](../images/dp-300-module-04-lab-14.png)
 
