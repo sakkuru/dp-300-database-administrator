@@ -134,6 +134,6 @@ lab:
     EXECUTE SalesLT.DemoProc
     ```
 
-    ストアドプロシージャから返されたデータ行を表示するスクリーンショット](../images/dp-300-module-03-lab-10.png)
+    ![ストアドプロシージャから返されたデータ行を表示するスクリーンショット](../images/dp-300-module-03-lab-10.png)
 
 この演習では、Azure Active Directory を使用して、Azure でホストされている SQL Server への Azure 認証情報のアクセス権を付与する方法について説明しました。また、T-SQLステートメントを使用して、新しいデータベースユーザーを作成し、ストアドプロシージャーの実行権限を付与しました。
