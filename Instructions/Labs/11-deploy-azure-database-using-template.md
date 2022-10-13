@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Lab 11 – Azure Resource Manager テンプレートを使用した Azure SQL Database のデプロイ'
+    title: 'ラボ11: Azure Resource Manager テンプレートを使用して Azure SQL Database をデプロイする'
     module: 'Azure SQL のデータベース タスクを自動化する'
 ---
 
-# テンプレートから Azure SQL Database をデプロイする
+# ラボ11: Azure Resource Manager テンプレートを使用して Azure SQL Database をデプロイする
 
 **見積もり時間: 15 分**
 
