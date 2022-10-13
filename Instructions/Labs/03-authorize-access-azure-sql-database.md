@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Lab 3 – Azure Active Directory を使用して Azure SQL データベースへのアクセスを認証する'
+    title: 'ラボ03: Azure Active Directory を使用して Azure SQL Database へのアクセスを承認する'
     module: 'データベース サービスに安全な環境を実装する'
 ---
 
-# データベースの認証と認可を構成する
+# ラボ03: Azure Active Directory を使用して Azure SQL Database へのアクセスを承認する
 
 **推定時間：20分**
 
