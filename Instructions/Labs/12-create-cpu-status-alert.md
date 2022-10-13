@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Lab 12 – SQL Server の CPU ステータス アラートを作成する'
+    title: 'ラボ12: SQL Server の CPU 状態アラートを作成する'
     module: 'Azure SQL のデータベース タスクを自動化する'
 ---
 
-# Azure 上の SQL Server の CPU ステータスアラートを作成する
+# ラボ12: SQL Server の CPU 状態アラートを作成する
 
 **見積もり時間: 30 分**
 
