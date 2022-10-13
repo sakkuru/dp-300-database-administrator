@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Lab 5 – SQL とデータの分類のために Microsoft Defender を有効にする'
+    title: 'ラボ05: Microsoft Defender for SQL とデータ分類を有効にする'
     module: 'データベースサービスのための安全な環境の実装'
 ---
 
-# SQL とデータ分類のために Microsoft Defender を有効にする
+# ラボ05: Microsoft Defender for SQL とデータ分類を有効にする
 
 **推定時間: 20 分**
 
