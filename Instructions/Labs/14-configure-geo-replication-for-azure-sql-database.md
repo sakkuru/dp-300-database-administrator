@@ -1,10 +1,10 @@
 ---
 lab:
-    title: 'Lab 14 – Azure SQL Database のジオ レプリケーションを設定する'
+    title: 'ラボ14: Azure SQL Database 用に geo レプリケーションを構成する'
     module: '高可用性と災害復旧ソリューションの計画と実装'
 ---
 
-# Azure SQL Database のジオレプリケーションを構成する
+# ラボ14: Azure SQL Database 用に geo レプリケーションを構成する
 
 **見積もり時間：30分**
 
