@@ -158,9 +158,9 @@ SQL Server Management Studioで実行計画を生成するには、いくつか�
 
     互換性レベルを変更することは、データベースを過去に戻すようなものです。SQL Server が使用できる機能を、SQL Server 2008 で使用できた機能に制限します。
 
-1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/CreateRandomWorkloadGenerator.sql** にある T-SQL スクリプトを **C:\LabFiles にダウンロードします。ラボ仮想マシンの \Monitor and optimize** パス。
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/CreateRandomWorkloadGenerator.sql** にある T-SQL スクリプトを **C:\LabFiles\Monitor and optimize** にダウンロードします。
 
-1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/ExecuteRandomWorkload.sql** にある T-SQL スクリプトを **C:\LabFiles にダウンロードします。ラボ仮想マシンの \Monitor and optimize** パス。
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/ExecuteRandomWorkload.sql** にある T-SQL スクリプトを **C:\LabFile\Monitor and optimizes** にダウンロードします。
 
 1. SQL Server Management Studio で **ファイル** > **開く** > **ファイル** メニューを選択します。
 
@@ -275,7 +275,7 @@ SQL Server Management Studioで実行計画を生成するには、いくつか�
 
 1. SalesPersonID に変数値を使用するようにクエリを変更します。
 
-1. Use the T-SQL **DECLARE** statement to declare <strong>@SalesPersonID</strong> so you can pass in a value instead of hard-code the value in the **WHERE** clause. You should ensure that the data type of your variable matches the data type of the column in the target table to avoid implicit conversion.
+1. T-SQL **DECLARE** ステートメントを使用して @SalesPersonID を宣言し、 **WHERE** 句で値をハードコードする代わりに、値を渡すことができるようにします。変数のデータ型がターゲット・テーブルのカラムのデータ型と一致することを確認し、暗黙の変換を回避する必要があります。
 
     ```sql
     USE AdventureWorks2017;
