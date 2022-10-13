@@ -105,22 +105,22 @@ SQL Server Management Studioで実行計画を生成するには、いくつか�
 
     実行計画を確認すると、**Key Lookup**という項目があることがわかります。アイコンの上にマウスを置くと、プロパティがクエリで取得された各行に対して実行されることを示しているのがわかります。実行計画が **Key Lookup** 操作を実行していることがわかります。
 
-    ![このように、列の出力リストを示すスクリーンショット](../images/dp-300-module-10-lab-03.png)が表示されます。
+    ![このように、列の出力リストを示すスクリーンショット](../images/dp-300-module-10-lab-03.png)
 
     **出力リスト**にある列をメモしておいてください。このクエリをどのように改善しますか？
 
-    キーのルックアップを削除するためにどのインデックスを変更する必要があるかを特定するために、その上のインデックスシークを検査する必要があります。インデックスシーク演算子の上にマウスを置くと、その演算子のプロパティが表示されます。
+    Key Lookupを削除するためにどのインデックスを変更する必要があるかを特定するために、その上のインデックスシークを検査する必要があります。インデックスシーク演算子の上にマウスを置くと、その演算子のプロパティが表示されます。
 
     ![NonClusteredインデックスを示すスクリーンショット](../images/dp-300-module-10-lab-04.png)
 
-1. **キー検索**は、クエリで返される、または検索されるすべてのフィールドを含むカバーインデックスを追加することで、削除することができます。この例では、インデックスは **ProductID** 列のみを使用します。**キールックアップ**を修正し、クエリを再実行すると、新しいプランが表示されます。
+1. **Key Lookup**は、クエリで返される、または検索されるすべてのフィールドを含むカバーインデックスを追加することで、削除することができます。この例では、インデックスは **ProductID** 列のみを使用します。**Key Lookup**を修正し、クエリを再実行すると、新しいプランが表示されます。
 
     ```sql
     CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID] ON [Sales].[SalesOrderDetail]
     ([ProductID] ASC)
     ```
 
-    **出力リスト**フィールドを含まれる列としてインデックスに追加すると、**キールックアップ**は削除されます。インデックスはすでに存在しているので、列を追加するためには、インデックスをDROPして再作成するか、**DROP_EXISTING=ON**を設定する必要があります。ProductID**列はすでにインデックスの一部であり、含まれる列として追加する必要はないことに注意してください。ModifiedDate**を追加することで、もう1つインデックスを改善することができます。
+    **Output List**フィールドを含まれる列としてインデックスに追加すると、**Key Lookup**は削除されます。インデックスはすでに存在しているので、列を追加するためには、インデックスをDROPして再作成するか、**DROP_EXISTING=ON**を設定する必要があります。ProductID**列はすでにインデックスの一部であり、含まれる列として追加する必要はないことに注意してください。ModifiedDate**を追加することで、もう1つインデックスを改善することができます。
 
     ```sql
     CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID]
@@ -159,8 +159,9 @@ SQL Server Management Studioで実行計画を生成するには、いくつか�
     互換性レベルを変更することは、データベースを過去に戻すようなものです。SQL Server が使用できる機能を、SQL Server 2008 で使用できた機能に制限します。
 
 1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/CreateRandomWorkloadGenerator.sql** にある T-SQL スクリプトを **C:\LabFiles\Monitor and optimize** にダウンロードします。
+    > 注: **raw**ボタンを右クリックし、「名前を付けてリンクを保存」を選択します。
 
-1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/ExecuteRandomWorkload.sql** にある T-SQL スクリプトを **C:\LabFile\Monitor and optimizes** にダウンロードします。
+1. **https://github.com/MicrosoftLearning/dp-300-database-administrator/blob/master/Instructions/Templates/ExecuteRandomWorkload.sql** にある T-SQL スクリプトを **C:\LabFile\Monitor and optimize** にダウンロードします。
 
 1. SQL Server Management Studio で **ファイル** > **開く** > **ファイル** メニューを選択します。
 
